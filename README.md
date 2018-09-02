@@ -1,1 +1,1 @@
-cat
+# codechef-virtual-contest
