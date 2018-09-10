@@ -1,0 +1,9 @@
+{
+  "url_base": "https://api.codechef.com",
+  "url_authorize": "/oauth/authorize",
+  "url_token": "/oauth/token",
+  "url_redirect": "http://149.129.136.228:3000/",
+  "url_redirect_dev": "http://localhost:3000/",
+  "client_id": "b86af1a43aec2c15b66cda4bae1e229c",
+  "client_secret": "f22381d658eb435acc75cd828053a557"
+}
