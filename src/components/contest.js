@@ -72,12 +72,14 @@ class Contest extends Component {
 
       return (
         <div>
-          <h2> List of contests </h2>
-          <Table striped>
-            <tbody>
-              {items}
-            </tbody>
-          </Table>
+          <h3> List of contests </h3>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Table striped style={{ width: '90%' }}>
+              <tbody>
+                {items}
+              </tbody>
+            </Table>
+          </div>
         </div>
       );
     }
