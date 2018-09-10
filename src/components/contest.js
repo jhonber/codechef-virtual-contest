@@ -33,7 +33,9 @@ class Contest extends Component {
       }
       else {
         what.setState({ valid_api_token: false, contestList: [] });
-        what.handleRefreshToken();
+        if (window.localStorage.refresh_token && window.localStorage.refresh_token != '') {
+          what.handleRefreshToken();
+        }
         console.log("Error retrieving data: ", err);
       }
     });
@@ -43,7 +45,6 @@ class Contest extends Component {
     utils.refreshToken(function (err, data) {
       if (err) {
         window.localStorage.clear();
-        alert("Error refreshing token!");
         window.location = '/';
       }
       else {

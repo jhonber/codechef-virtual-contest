@@ -82,5 +82,20 @@ module.exports = {
           cb(err);
         }
       });
+  },
+
+  checkLocalStorage: function (cb) {
+    function check() {
+      var test = 'test';
+      try {
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        cb(true);
+      } catch (e) {
+        cb(false);
+      }
+    }
+
+    check();
   }
 };
