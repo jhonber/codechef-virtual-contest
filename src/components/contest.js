@@ -17,7 +17,7 @@ class Contest extends Component {
   handleContests() {
     var what = this;
     var token = window.localStorage.getItem('api_token');
-    var url = 'https://api.codechef.com/contests'
+    var url = 'https://api.codechef.com/contests?status=past&limit=10'
 
     utils.getContestsList(url, token, function (err, data) {
       if (!err) {
