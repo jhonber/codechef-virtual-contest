@@ -41,7 +41,11 @@ class Contest extends Component {
 
   handleRefreshToken() {
     utils.refreshToken(function (err, data) {
-      if (err) alert("Error refreshing token!");
+      if (err) {
+        window.localStorage.clear();
+        alert("Error refreshing token!");
+        window.location = '/';
+      }
       else {
         window.localStorage.setItem('access_token', data.access_token);
         window.localStorage.setItem('refresh_token', data.refresh_token);
