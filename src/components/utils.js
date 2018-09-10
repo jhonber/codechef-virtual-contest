@@ -30,6 +30,30 @@ module.exports = {
       });
   },
 
+  refreshToken: function (cb) {
+    url += config.url_token;
+    var data = {
+      "grant_type": "refresh_token", 
+      "refresh_token": window.localStorage.refresh_token,
+      "client_id": config.client_id,
+      "client_secret": config.client_secret
+    }
+
+    superagent
+      .post(url)
+      .send(data)
+      .end(function (err, res) {
+        res = res.body;
+        if ("status" in res && res.status == 'OK') {
+          cb(false, res.result.data);
+        }
+        else {
+          console.log('Error: ', res)
+          cb(true);
+        }
+      });
+  },
+
   getContestsList: function (url, token, cb) {
     superagent
       .get(url)
