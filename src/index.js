@@ -6,6 +6,8 @@ import registerServiceWorker from './registerServiceWorker';
 import Page from 'page';
 import Utils from './components/utils';
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 function startHomeView() {
   ReactDOM.render(<App />, document.getElementById('root'));
 }
