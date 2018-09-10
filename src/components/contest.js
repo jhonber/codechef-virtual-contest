@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import utils from './utils';
 
+var config = require('../config.json');
+var url = config.url_base;
+
 class Contest extends Component {
 
   constructor(props) {
@@ -11,44 +14,39 @@ class Contest extends Component {
     }
 
     this.handleContests = this.handleContests.bind(this);
-    this.handleApiToken = this.handleApiToken.bind(this);
+    this.handleRefreshToken = this.handleRefreshToken.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleContests();
   }
 
   handleContests() {
     var what = this;
-    var token = window.localStorage.getItem('api_token');
-    var url = 'https://api.codechef.com/contests?status=past&limit=10'
+    var token = window.localStorage.getItem('access_token');
+    url += '/contests?status=past&limit=10';
 
     utils.getContestsList(url, token, function (err, data) {
       if (!err) {
-        what.setState({valid_api_token: true, contestList: data.contestList });
+        what.setState({ valid_api_token: true, contestList: data.contestList });
         console.log(data.contestList)
       }
       else {
-        what.setState({valid_api_token: false, contestList: [] });
-        alert("Error retrieving data: ", err);
+        what.setState({ valid_api_token: false, contestList: [] });
+        what.handleRefreshToken();
+        console.log("Error retrieving data: ", err);
       }
     });
   }
 
-  handleApiToken() {
-    utils.getToken(function (err, api_token) {
-      if (err) alert("Error retrieving api_token!");
+  handleRefreshToken() {
+    utils.refreshToken(function (err, data) {
+      if (err) alert("Error refreshing token!");
       else {
-        window.localStorage.api_token = api_token;
+        window.localStorage.setItem('access_token', data.access_token);
+        window.localStorage.setItem('refresh_token', data.refresh_token);
       }
     });
-  }
-
-  componentDidMount() {
-    var api_token = window.localStorage.getItem('api_token');
-
-    if (!api_token || api_token == '') {
-      this.handleApiToken();
-    }
-    else {
-      this.handleContests();
-    }
   }
 
   render() {
