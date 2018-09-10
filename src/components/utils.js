@@ -33,7 +33,7 @@ module.exports = {
   refreshToken: function (cb) {
     url += config.url_token;
     var data = {
-      "grant_type": "refresh_token", 
+      "grant_type": "refresh_token",
       "refresh_token": window.localStorage.refresh_token,
       "client_id": config.client_id,
       "client_secret": config.client_secret
@@ -59,21 +59,27 @@ module.exports = {
       .get(url)
       .set('Authorization', 'Bearer ' + token)
       .end(function (err, res) {
-        var data = res.body;
-        console.log("HERE")
-        console.log(data)
         if (!err) {
-          if ('status' in data) {
-            if (data.status == 'OK') {
-              cb(false, data.result.data.content);
+          var data = res.body;
+          console.log("data:")
+          console.log(data)
+          if (!err) {
+            if ('status' in data) {
+              if (data.status == 'OK') {
+                cb(false, data.result.data.content);
+              }
+              else {
+                cb(true, data.result.errors[0]);
+              }
             }
-            else {
-              cb(true, data.result.errors[0]);
-            }
+          }
+          else {
+            cb(true, err);
           }
         }
         else {
-          cb(true, err);
+          console.log('err: ', err);
+          cb(err);
         }
       });
   }
