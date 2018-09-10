@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import utils from './utils';
+import { Table } from 'reactstrap'
 
 var config = require('../config.json');
 var url = config.url_base;
@@ -58,13 +59,25 @@ class Contest extends Component {
     if (this.state.valid_api_token && this.state.contestList) {
       var url_contest = config.url_main + '/';
       var items = this.state.contestList.map(function (i) {
-        return (<div> <a target="_blank" href={url_contest + i.code}> {i.name} </a> </div>)
+        return (<tr>
+          <td>
+            <a target="_blank" href={url_contest + i.code}> {i.name} </a>
+          </td>
+          <td>
+            <a href={'/contest/' + i.code}> Practice </a>
+          </td>
+        </tr>
+        )
       });
 
       return (
         <div>
           <h2> List of contests </h2>
-          {items}
+          <Table striped>
+            <tbody>
+              {items}
+            </tbody>
+          </Table>
         </div>
       );
     }
