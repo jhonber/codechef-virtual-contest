@@ -58,7 +58,7 @@ class Contest extends Component {
     if (this.state.valid_api_token && this.state.contestList) {
       var url_contest = config.url_main + '/';
       var items = this.state.contestList.map(function (i) {
-        return (<div> <a href={url_contest + i.code}> {i.name} </a> </div>)
+        return (<div> <a target="_blank" href={url_contest + i.code}> {i.name} </a> </div>)
       });
 
       return (
