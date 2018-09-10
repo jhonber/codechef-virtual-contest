@@ -1,14 +1,14 @@
 var superagent = require('superagent');
 
 module.exports = {
-  getToken: function (cb) {
+  getTokenFirstTime: function (code, cb) {
     var url = 'https://api.codechef.com/oauth/token'
     var data = {
-      "grant_type": "client_credentials",
-      "scope": "public",
+      "grant_type": "authorization_code",
+      "code": code,
       "client_id": "b86af1a43aec2c15b66cda4bae1e229c",
       "client_secret": "f22381d658eb435acc75cd828053a557",
-      "redirect_uri": ""
+      "redirect_uri": "http://localhost:3000/"
     }
 
     superagent
@@ -16,8 +16,10 @@ module.exports = {
       .send(data)
       .end(function (err, res) {
         res = res.body
+        console.log("RES")
+        console.log(res)
         if ("status" in res && res.status == 'OK') {
-          cb(false, res.result.data.access_token);
+          cb(false, res.result.data);
         }
         else {
           console.log('Error: ', res)
