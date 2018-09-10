@@ -67,11 +67,11 @@ class App extends Component {
     var user = (this.state.userInfo ? <p> Welcome: {this.state.userInfo.username} </p> : <p> Anonymous </p>);
 
     var home = <div className="App">
-      {user}
       <h1 className="App-title">Codechef Virtual Contest</h1>
       <p className="App-intro">
         Run past contests of Codechef in virtual mode
       </p>
+      {user}
       <Contest />
     </div>
 
