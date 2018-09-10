@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Contest from './components/contest';
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
         <p className="App-intro">
           Run past contests of Codechef in virtual mode
         </p>
+        <Contest />
       </div>
     );
   }
