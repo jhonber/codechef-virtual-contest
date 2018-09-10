@@ -10,7 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      localStorage_is_available: true
+      localStorage_is_available: true,
+      userInfo: null
     }
   }
 
@@ -40,13 +41,33 @@ class App extends Component {
               '&state=xyz&redirect_uri=' + config.url_redirect_dev
             window.location = url;
           }
+          else {
+            what.handleInfoUser();
+          }
         }
       }
     });
   }
 
+  handleInfoUser() {
+    var what = this;
+    url += config.url_user;
+    var token = window.localStorage.getItem('access_token');
+    Utils.getRequest(url, token, function (err, data) {
+      if (!err) {
+        what.setState({ userInfo: data });
+      }
+      else {
+        console.log('Error: ', err);
+      }
+    });
+  }
+
   render() {
+    var user = (this.state.userInfo ? <p> Welcome: {this.state.userInfo.username} </p> : <p> Anonymous </p>);
+
     var home = <div className="App">
+      {user}
       <h1 className="App-title">Codechef Virtual Contest</h1>
       <p className="App-intro">
         Run past contests of Codechef in virtual mode
@@ -55,6 +76,7 @@ class App extends Component {
     </div>
 
     var error_page = <div> <h2> LocalStorage not supported! </h2> </div>
+
 
     return (
       (this.state.localStorage_is_available ? home : error_page)
