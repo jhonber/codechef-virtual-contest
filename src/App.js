@@ -3,6 +3,9 @@ import './App.css';
 import Contest from './components/contest';
 import Utils from './components/utils'
 
+var config = require('./config.json');
+var url = config.url_base;
+
 class App extends Component {
 
   componentDidMount() {
@@ -19,7 +22,9 @@ class App extends Component {
     else {
       var refresh_token = window.localStorage.getItem('refresh_token');
       if (!refresh_token || refresh_token == '') {
-        var url = 'https://api.codechef.com/oauth/authorize?response_type=code&client_id=b86af1a43aec2c15b66cda4bae1e229c&state=xyz&redirect_uri=http://localhost:3000/'
+        url += config.url_authorize
+        url += '?response_type=code&client_id=' + config.client_id +
+        '&state=xyz&redirect_uri=' + config.url_redirect_dev
         window.location = url;
       }
     }

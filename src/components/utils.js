@@ -1,14 +1,16 @@
 var superagent = require('superagent');
+var config = require('../config.json');
+var url = config.url_base;
 
 module.exports = {
   getTokenFirstTime: function (code, cb) {
-    var url = 'https://api.codechef.com/oauth/token'
+    url += config.url_token;
     var data = {
       "grant_type": "authorization_code",
       "code": code,
-      "client_id": "b86af1a43aec2c15b66cda4bae1e229c",
-      "client_secret": "f22381d658eb435acc75cd828053a557",
-      "redirect_uri": "http://localhost:3000/"
+      "client_id": config.client_id,
+      "client_secret": config.client_secret,
+      "redirect_uri": config.url_redirect_dev
     }
 
     superagent
