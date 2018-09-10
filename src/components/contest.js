@@ -26,7 +26,7 @@ class Contest extends Component {
     var token = window.localStorage.getItem('access_token');
     url += '/contests?status=past&limit=10';
 
-    utils.getContestsList(url, token, function (err, data) {
+    utils.getRequest(url, token, function (err, data) {
       if (!err) {
         what.setState({ valid_api_token: true, contestList: data.contestList });
         console.log(data.contestList)

@@ -54,7 +54,7 @@ module.exports = {
       });
   },
 
-  getContestsList: function (url, token, cb) {
+  getRequest: function (url, token, cb) {
     superagent
       .get(url)
       .set('Authorization', 'Bearer ' + token)
