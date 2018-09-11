@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import utils from './utils';
-import { Table } from 'reactstrap'
+import { Table, Button } from 'reactstrap'
 
 var config = require('../config.json');
 var url = config.url_base;
@@ -64,14 +64,19 @@ class Contest extends Component {
             <a target="_blank" href={url_contest + i.code}> {i.name} </a>
           </td>
           <td>
-            <a href={'/contest/' + i.code}> Practice </a>
+            <Button
+              color="success"
+              size="sm"
+              onClick={() => { window.location = '/contest/' + i.code }} >
+              Practice
+            </Button>{' '}
           </td>
         </tr>
         )
       });
 
       return (
-        <div style={{textAlign: 'center'}}>
+        <div style={{ textAlign: 'center' }}>
           <h4> List of contests </h4>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Table striped style={{ width: '90%' }}>
