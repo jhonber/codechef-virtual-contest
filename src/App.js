@@ -66,7 +66,7 @@ class App extends Component {
   render() {
     var user = (this.state.userInfo ?
       <p className="text-success"
-        style={{ fontWeight: 'bold' }}>
+        style={{ fontWeight: 'bold', margin: 0 }}>
         Welcome: {this.state.userInfo.username}
       </p> :
       <p className="text-warning"> Anonymous </p>);
@@ -80,7 +80,6 @@ class App extends Component {
             {user}
           </Container>
         </Jumbotron>
-
       </div>
       <Contest />
     </div >

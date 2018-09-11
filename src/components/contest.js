@@ -71,8 +71,8 @@ class Contest extends Component {
       });
 
       return (
-        <div>
-          <h3> List of contests </h3>
+        <div style={{textAlign: 'center'}}>
+          <h4> List of contests </h4>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Table striped style={{ width: '90%' }}>
               <tbody>
