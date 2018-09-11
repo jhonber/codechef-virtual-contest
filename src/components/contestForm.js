@@ -28,8 +28,7 @@ class ContestForm extends Component {
     var val = this.state.minutesBeforeStart;
 
     if (isNumber(val) && val >= 5 && val <= 60) {
-      this.setState({valid: true});
-      alert("Ready to proccess")
+      this.setState({valid: true, created: true});
     }
     else {
       this.setState({valid: false});
@@ -76,7 +75,14 @@ class ContestForm extends Component {
 
       }
       else {
-
+        return (
+          <div>
+            Counter
+            {/* TODO: create a countdown component
+              <Countdown />
+            */}
+          </div>
+        )
       }
     }
   }
