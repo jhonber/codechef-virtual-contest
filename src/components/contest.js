@@ -67,7 +67,7 @@ class Contest extends Component {
             <Button
               color="success"
               size="sm"
-              onClick={() => { window.location = '/contest/' + i.code }} >
+              onClick={() => { window.location = '/contest/' + i.code + '/' + i.name }} >
               Practice
             </Button>{' '}
           </td>
@@ -90,7 +90,7 @@ class Contest extends Component {
     }
     else {
       return (
-        <div>
+        <div style={{textAlign: 'center'}}>
           <h2> Problem getting data! </h2>
           <a href='/'> Reload page </a>
         </div>
