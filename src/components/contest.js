@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import utils from './utils';
 import { Table, Button } from 'reactstrap'
 
-var config = require('../config.json');
+var config = require('../config-dev.json');
 var url = config.url_base;
 
 class Contest extends Component {
