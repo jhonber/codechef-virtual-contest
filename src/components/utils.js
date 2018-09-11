@@ -1,5 +1,5 @@
 var superagent = require('superagent');
-var config = require('../config.json');
+var config = require('../config-dev.json');
 var url = config.url_base;
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
       "code": code,
       "client_id": config.client_id,
       "client_secret": config.client_secret,
-      "redirect_uri": config.url_redirect_dev
+      "redirect_uri": config.url_redirect
     }
 
     superagent

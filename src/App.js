@@ -3,7 +3,7 @@ import Contest from './components/contest';
 import Utils from './components/utils'
 import { Jumbotron, Container } from 'reactstrap';
 
-var config = require('./config.json');
+var config = require('./config-dev.json');
 var url = config.url_base;
 
 class App extends Component {
@@ -38,7 +38,7 @@ class App extends Component {
           if (!refresh_token || refresh_token == '') {
             url += config.url_authorize
             url += '?response_type=code&client_id=' + config.client_id +
-              '&state=xyz&redirect_uri=' + config.url_redirect_dev
+              '&state=xyz&redirect_uri=' + config.url_redirect
             window.location = url;
           }
           else {
