@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
 import Contest from './components/contest';
 import Utils from './components/utils'
+import { Jumbotron, Container } from 'reactstrap';
 
 var config = require('./config.json');
 var url = config.url_base;
@@ -64,16 +64,26 @@ class App extends Component {
   }
 
   render() {
-    var user = (this.state.userInfo ? <p> Welcome: {this.state.userInfo.username} </p> : <p> Anonymous </p>);
+    var user = (this.state.userInfo ?
+      <p className="text-success"
+        style={{ fontWeight: 'bold' }}>
+        Welcome: {this.state.userInfo.username}
+      </p> :
+      <p className="text-warning"> Anonymous </p>);
 
-    var home = <div className="App">
-      <h1 className="App-title">Codechef Virtual Contest</h1>
-      <p className="App-intro">
-        Run past contests of Codechef in virtual mode
-      </p>
-      {user}
+    var home = <div>
+      <div style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Jumbotron fluid style={{ textAlign: 'center', padding: 15 }}>
+          <Container fluid>
+            <h1>Codechef Virtual Contest</h1>
+            <p>Run past contests of Codechef in virtual mode</p>
+            {user}
+          </Container>
+        </Jumbotron>
+
+      </div>
       <Contest />
-    </div>
+    </div >
 
     var error_page = <div> <h2> LocalStorage not supported! </h2> </div>
 
