@@ -55,7 +55,7 @@ class App extends Component {
       <p className="text-warning"> Anonymous </p>);
 
     var loginButton = (!this.state.logged ? <Button
-      color="info"
+      color="primary"
       onClick={() => {
         url += config.url_authorize + '?response_type=code&client_id=' +
           config.client_id + '&state=xyz&redirect_uri=' + config.url_redirect

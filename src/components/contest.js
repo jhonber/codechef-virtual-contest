@@ -56,9 +56,12 @@ class Contest extends Component {
   }
 
   render() {
+    var items = null;
+    var mainView = null;
+
     if (this.state.valid_api_token && this.state.contestList) {
       var url_contest = config.url_main + '/';
-      var items = this.state.contestList.map(function (i) {
+      items = this.state.contestList.map(function (i) {
         return (<tr key={i.code}>
           <td>
             <a target="_blank" href={url_contest + i.code}> {i.name} </a>
@@ -75,27 +78,23 @@ class Contest extends Component {
         )
       });
 
-      return (
-        <div style={{ textAlign: 'center' }}>
-          <h4> List of contests </h4>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Table striped style={{ width: '90%' }}>
-              <tbody>
-                {items}
-              </tbody>
-            </Table>
-          </div>
+      mainView = <div style={{ textAlign: 'center' }}>
+        <h4> List of contests </h4>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Table striped style={{ width: '90%' }}>
+            <tbody>
+              {items}
+            </tbody>
+          </Table>
         </div>
-      );
+      </div>
     }
-    else {
-      return (
-        <div style={{textAlign: 'center'}}>
-          <h2> Problem getting data! </h2>
-          <a href='/'> Reload page </a>
-        </div>
-      )
-    }
+
+    return (
+      <div>
+        {mainView}
+      </div>
+    )
   }
 }
 
