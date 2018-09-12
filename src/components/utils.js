@@ -25,7 +25,7 @@ module.exports = {
         }
         else {
           console.log('Error: ', res)
-          cb(true);
+          cb(true, res.result.errors.message);
         }
       });
   },
@@ -97,5 +97,9 @@ module.exports = {
     }
 
     check();
+  },
+
+  moveTo: function (to) {
+    window.location = to;
   }
 };

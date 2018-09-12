@@ -5,6 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Page from 'page';
 import ContestForm from './components/contestForm';
+import Utils from './components/utils';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -20,7 +21,23 @@ function startVirtualContestForm(context) {
   )
 }
 
+function startOAuth2(context) {
+  var code = context.querystring.split('&')[0].split('=')[1];
+
+  Utils.getTokenFirstTime(code, function (err, data) {
+    if (!err) {
+      window.localStorage.setItem('access_token', data.access_token);
+      window.localStorage.setItem('refresh_token', data.refresh_token);
+      Utils.moveTo('/');
+    }
+    else {
+      alert(data);
+    }
+  });
+}
+
 Page('/', startHomeView);
+Page('/OAuth2', startOAuth2);
 Page('/contest/:code/:name', startVirtualContestForm);
 Page.start();
 

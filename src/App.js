@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Contest from './components/contest';
 import Utils from './components/utils'
-import { Jumbotron, Container } from 'reactstrap';
+import { Jumbotron, Container, Button } from 'reactstrap';
 
 var config = require('./config-dev.json');
 var url = config.url_base;
@@ -10,7 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      localStorage_is_available: true,
+      logged: false,
+      localStorageSupported: true,
       userInfo: null
     }
   }
@@ -18,32 +19,14 @@ class App extends Component {
   componentDidMount() {
     var what = this;
     Utils.checkLocalStorage(function (res) {
-      console.log("LOCAL: ", res);
       if (!res) {
-        what.setState({ localStorage_is_available: false });
+        what.setState({ localStorageSupported: false });
       }
       else {
-        var url_params = window.location.search;
-        if (url_params.indexOf('code') != -1) {
-          var code = url_params.split('?')[1].split('&')[0].split('=')[1];
-          console.log("CODE: ", code)
-          Utils.getTokenFirstTime(code, function (err, data) {
-            window.localStorage.setItem('access_token', data.access_token);
-            window.localStorage.setItem('refresh_token', data.refresh_token);
-            window.location = '/';
-          });
-        }
-        else {
-          var refresh_token = window.localStorage.getItem('refresh_token');
-          if (!refresh_token || refresh_token == '') {
-            url += config.url_authorize
-            url += '?response_type=code&client_id=' + config.client_id +
-              '&state=xyz&redirect_uri=' + config.url_redirect
-            window.location = url;
-          }
-          else {
-            what.handleInfoUser();
-          }
+        var refresh_token = window.localStorage.getItem('refresh_token');
+        if (refresh_token && refresh_token != '') {
+          what.setState({ logged: true });
+          what.handleInfoUser();
         }
       }
     });
@@ -71,6 +54,21 @@ class App extends Component {
       </p> :
       <p className="text-warning"> Anonymous </p>);
 
+    var loginButton = (!this.state.logged ? <Button
+      color="info"
+      onClick={() => {
+        url += config.url_authorize + '?response_type=code&client_id=' +
+          config.client_id + '&state=xyz&redirect_uri=' + config.url_redirect
+
+        window.location = url;
+        Utils.moveTo(url);
+      }}
+    >
+      Login
+    </Button>
+      :
+      null)
+
     var home = <div>
       <div style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Jumbotron fluid style={{ textAlign: 'center', padding: 15 }}>
@@ -78,6 +76,7 @@ class App extends Component {
             <h1>Codechef Virtual Contest</h1>
             <p>Run past contests of Codechef in virtual mode</p>
             {user}
+            {loginButton}
           </Container>
         </Jumbotron>
       </div>
@@ -86,9 +85,8 @@ class App extends Component {
 
     var error_page = <div> <h2> LocalStorage not supported! </h2> </div>
 
-
     return (
-      (this.state.localStorage_is_available ? home : error_page)
+      (this.state.localStorageSupported ? home : error_page)
     );
   }
 }
