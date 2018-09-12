@@ -2,7 +2,7 @@
   "url_base": "https://api.codechef.com",
   "url_authorize": "/oauth/authorize",
   "url_token": "/oauth/token",
-  "url_redirect": "http://localhost:3000/",
+  "url_redirect": "http://localhost:3000/OAuth2",
   "client_id": "8b8cd8105e734839b607c9d175c8777a",
   "client_secret": "6c04bc60828a23f2da7b5e6e909f05eb",
   "url_user": "/users/me",
