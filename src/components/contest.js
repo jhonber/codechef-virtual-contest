@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import utils from './utils';
+import Utils from './utils';
 import { Table, Button } from 'reactstrap'
 
 var config = require('../config-dev.json');
@@ -15,7 +15,6 @@ class Contest extends Component {
     }
 
     this.handleContests = this.handleContests.bind(this);
-    this.handleRefreshToken = this.handleRefreshToken.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +26,7 @@ class Contest extends Component {
     var token = window.localStorage.getItem('access_token');
     url += '/contests?status=past&limit=10';
 
-    utils.getRequest(url, token, function (err, data) {
+    Utils.getRequest(url, token, function (err, data) {
       if (!err) {
         what.setState({ valid_api_token: true, contestList: data.contestList });
         console.log(data.contestList)
@@ -35,22 +34,9 @@ class Contest extends Component {
       else {
         what.setState({ valid_api_token: false, contestList: [] });
         if (window.localStorage.refresh_token && window.localStorage.refresh_token != '') {
-          what.handleRefreshToken();
+          Utils.refreshToken();
         }
         console.log("Error retrieving data: ", err);
-      }
-    });
-  }
-
-  handleRefreshToken() {
-    utils.refreshToken(function (err, data) {
-      if (err) {
-        window.localStorage.clear();
-        window.location = '/';
-      }
-      else {
-        window.localStorage.setItem('access_token', data.access_token);
-        window.localStorage.setItem('refresh_token', data.refresh_token);
       }
     });
   }

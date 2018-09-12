@@ -42,6 +42,7 @@ class App extends Component {
       }
       else {
         console.log('Error: ', err);
+        Utils.logout();
       }
     });
   }

@@ -30,7 +30,7 @@ module.exports = {
       });
   },
 
-  refreshToken: function (cb) {
+  refreshToken: function () {
     url += config.url_token;
     var data = {
       "grant_type": "refresh_token",
@@ -45,11 +45,13 @@ module.exports = {
       .end(function (err, res) {
         res = res.body;
         if ("status" in res && res.status == 'OK') {
-          cb(false, res.result.data);
+          var data = res.result.data;
+          window.localStorage.setItem('access_token', data.access_token);
+          window.localStorage.setItem('refresh_token', data.refresh_token);
         }
         else {
           console.log('Error: ', res)
-          cb(true);
+          module.exports.logout();
         }
       });
   },
@@ -101,5 +103,10 @@ module.exports = {
 
   moveTo: function (to) {
     window.location = to;
+  },
+
+  logout: function () {
+    window.localStorage.clear();
+    module.exports.moveTo('/');
   }
 };
