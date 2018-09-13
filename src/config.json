@@ -6,5 +6,6 @@
   "client_id": "76ffa84f57f0276abcbc5d8ecc246691",
   "client_secret": "ed3f09a2110901436e901b998494341f",
   "url_user": "/users/me",
-  "url_main": "https://www.codechef.com"
+  "url_main": "https://www.codechef.com",
+  "url_backend": "http://149.129.136.228:3333"
 }
