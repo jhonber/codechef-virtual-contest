@@ -39,6 +39,7 @@ class App extends Component {
     Utils.getRequest(url, token, function (err, data) {
       if (!err) {
         what.setState({ userInfo: data });
+        window.localStorage.user = data.username;
       }
       else {
         console.log('Error: ', err);
