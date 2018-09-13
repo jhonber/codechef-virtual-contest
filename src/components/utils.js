@@ -86,6 +86,16 @@ module.exports = {
       });
   },
 
+  postRequest: function (url, data, cb) {
+    superagent
+      .post(url)
+      .send(data)
+      .end(function (err, res) {
+        if (err) cb(true, res.text)
+        else cb(false, res);
+      });
+  },
+
   checkLocalStorage: function (cb) {
     function check() {
       var test = 'test';
