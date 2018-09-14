@@ -7,6 +7,7 @@ import Page from 'page';
 import ContestForm from './components/contestForm';
 import Utils from './components/utils';
 import Problems from './components/problems';
+import Countdown from './components/countdown';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -30,6 +31,14 @@ function startProblemsView(context) {
   )
 }
 
+function startCountdownView(context) {
+  var code = context.params.code;
+  ReactDOM.render(
+    <Countdown contestCode={code} />,
+    document.getElementById('root')
+  )
+}
+
 function startOAuth2(context) {
   var code = context.querystring.split('&')[0].split('=')[1];
 
@@ -48,7 +57,8 @@ function startOAuth2(context) {
 Page('/', startHomeView);
 Page('/OAuth2', startOAuth2);
 Page('/contest/:code/:name', startVirtualContestForm);
-Page('/problems/:code', startProblemsView)
+Page('/problems/:code', startProblemsView);
+Page('/countdown/:code/', startCountdownView);
 Page.start();
 
 registerServiceWorker();
