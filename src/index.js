@@ -6,6 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import Page from 'page';
 import ContestForm from './components/contestForm';
 import Utils from './components/utils';
+import Problems from './components/problems';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -17,6 +18,14 @@ function startVirtualContestForm(context) {
   var params = context.params;
   ReactDOM.render(
     <ContestForm contestName={params.name} contestCode={params.code} />,
+    document.getElementById('root')
+  )
+}
+
+function startProblemsView(context) {
+  var code = context.params.code;
+  ReactDOM.render(
+    <Problems contestCode={code} />,
     document.getElementById('root')
   )
 }
@@ -39,6 +48,7 @@ function startOAuth2(context) {
 Page('/', startHomeView);
 Page('/OAuth2', startOAuth2);
 Page('/contest/:code/:name', startVirtualContestForm);
+Page('/problems/:code', startProblemsView)
 Page.start();
 
 registerServiceWorker();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Utils from './utils';
-import { Table, Button } from 'reactstrap'
+import { Table, Button } from 'reactstrap';
 
 var config = require('../config-dev.json');
 var url = config.url_base;
