@@ -11,22 +11,46 @@ class Problems extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      contestCode: this.props.contestCode,
       contestName: '',
-      contestCode: '',
       problems: []
     }
   }
 
   componentDidMount() {
-    url += '/contests/' + this.props.contestCode;
+    url += '/contests/' + this.state.contestCode;
     var token = window.localStorage.access_token;
     var what = this;
     Utils.getRequest(url, token, function (err, res) {
-      console.log('err: ', err)
-      console.log('res: ', res)
+
       if (!err) {
         var problems = res.problemsList;
-        what.setState({ contestName: res.name, contestCode: res.code, problems: problems });
+        process(0);
+
+        function process(i) {
+          if (i == problems.length) {
+            what.setState({ contestName: res.name, contestCode: res.code, problems: problems });
+            return;
+          }
+          var cur_code = problems[i].problemCode;
+          var cur_url = config.url_base + '/contests/' +
+            what.state.contestCode + '/problems/' + cur_code;
+
+          if (!window.localStorage.getItem(cur_code) || window.localStorage.getItem(cur_code) == '') {
+            Utils.getRequest(cur_url, token, function (err, res) {
+              if (!err) {
+                problems[i].problemName = res.problemName;
+                window.localStorage.setItem(cur_code, res.problemName);
+              }
+
+              process(i + 1);
+            });
+          }
+          else {
+            problems[i].problemName = window.localStorage.getItem(cur_code);
+            process(i + 1);
+          }
+        }
       }
       else {
         alert(res);
@@ -39,10 +63,11 @@ class Problems extends Component {
     if (this.state.problems.length > 0) {
       items = this.state.problems.map(function (i) {
         return (
-          <tr key={i}>
+          <tr key={i.problemCode}>
             <td>
-              <a target="_blank" href={url_problem + '/' + i.contestCode + '/problems/' + i.problemCode}> {i.problemCode} </a>
+              <a target="_blank" href={url_problem + '/' + i.contestCode + '/problems/' + i.problemCode}> {i.problemName} </a>
             </td>
+            <td> {i.problemCode} </td>
             <td> {i.successfulSubmissions} </td>
             <td> {parseFloat(i.accuracy).toFixed(2)} </td>
           </tr>
@@ -55,6 +80,7 @@ class Problems extends Component {
         <Table style={{ width: '60%' }}>
           <thead>
             <tr>
+              <th> Name </th>
               <th> Code </th>
               <th> Successful submissions </th>
               <th> Accuracy </th>
