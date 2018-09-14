@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Utils from './utils';
 var moment = require('moment');
 
 class Countdown extends Component {
@@ -26,7 +27,8 @@ class Countdown extends Component {
     var start_time = new Date(this.state.startTime);
     var cur_time = new Date();
     if (start_time == 'Invalid Date' || start_time <= cur_time) {
-      return this.setState({ hours: '00', minutes: '00', seconds: '00' });
+      this.setState({ hours: '00', minutes: '00', seconds: '00' });
+      Utils.moveTo('/problems/' + this.props.contestCode);
     }
 
     var rest = moment(start_time).subtract(cur_time.getHours(), 'hours').toDate();

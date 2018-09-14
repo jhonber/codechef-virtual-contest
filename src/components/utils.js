@@ -91,7 +91,10 @@ module.exports = {
       .post(url)
       .send(data)
       .end(function (err, res) {
-        if (err) cb(true, res.text)
+        if (err) {
+          if (res) cb(true, res.text);
+          else cb(true, err);
+        }
         else cb(false, res);
       });
   },

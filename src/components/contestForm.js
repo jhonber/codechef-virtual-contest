@@ -11,9 +11,9 @@ class ContestForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      startTime: null,
       minutesBeforeStart: 5,
       created: false,
-      running: false,
       valid: true
     }
 
@@ -31,6 +31,7 @@ class ContestForm extends Component {
     if (isNumber(val) && val >= 5 && val <= 60) {
       url = config.url_backend + '/contest';
       var start_time = moment(new Date()).add(this.state.minutesBeforeStart, 'm').toDate();
+      this.setState({ startTime: start_time });
 
       var data = {
         name: this.props.contestName,
@@ -49,9 +50,9 @@ class ContestForm extends Component {
           what.setState({ valid: true, created: true });
           // TODO: show info after successful created
           console.log('res: ', res);
+
         }
         else {
-          console.log('XXXX', res)
           alert(res);
         }
       });
@@ -97,19 +98,9 @@ class ContestForm extends Component {
       )
     }
     else {
-      if (this.running) {
-
-      }
-      else {
-        return (
-          <div>
-            Counter
-            {/* TODO: create a countdown component
-              <Countdown />
-            */}
-          </div>
-        )
-      }
+      window.localStorage.setItem('contestName', this.props.contestName);
+      window.localStorage.setItem('startTime', this.state.startTime);
+      Utils.moveTo('/countdown/' + this.props.contestCode);
     }
   }
 }
