@@ -31,10 +31,9 @@ function startProblemsView(context) {
   )
 }
 
-function startCountdownView(context) {
-  var code = context.params.code;
+function startCountdownView() {
   ReactDOM.render(
-    <Countdown contestCode={code} />,
+    <Countdown redirect={true} />,
     document.getElementById('root')
   )
 }
@@ -58,7 +57,7 @@ Page('/', startHomeView);
 Page('/OAuth2', startOAuth2);
 Page('/contest/:code/:name', startVirtualContestForm);
 Page('/problems/:code', startProblemsView);
-Page('/countdown/:code/', startCountdownView);
+Page('/countdown', startCountdownView);
 Page.start();
 
 registerServiceWorker();
