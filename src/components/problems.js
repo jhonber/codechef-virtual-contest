@@ -77,9 +77,9 @@ class Problems extends Component {
     }
 
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
-          <Table style={{ width: '60%' }}>
+          <Table bordered={true}>
             <thead>
               <tr>
                 <th> Name </th>
@@ -93,8 +93,8 @@ class Problems extends Component {
             </tbody>
           </Table>
         </div>
-        <div>
-          <Countdown />
+        <div style={{ marginLeft: 20 }}>
+          <Countdown style={{ justifyContent: 'center', textAlign: 'center' }} />
         </div>
       </div>
     )

@@ -93,10 +93,21 @@ class Countdown extends Component {
         msj = 'Before start'
       }
 
+      var default_style = {
+        textAlign: 'center',
+        justifyContent: 'center',
+        fontSize: 25,
+        paddingBottom: 0,
+        marginTop: 50,
+        marginBottom: 0
+      }
+
+      var style = (this.props.style ? this.props.style : default_style);
+
       return (
-        <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+        <div style={style}>
           <h1> {window.localStorage.contestName} </h1>
-          <p style={{ fontSize: 25, paddingBottom: 0, marginTop: 50, marginBottom: 0 }}> {msj} </p>
+          <p> {msj} </p>
           {counter}
         </div>
       )
