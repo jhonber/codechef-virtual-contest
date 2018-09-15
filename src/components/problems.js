@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Utils from './utils';
 import { Table } from 'reactstrap';
+import Countdown from './countdown';
 
 var config = require('../config-dev.json');
 var url = config.url_base;
@@ -76,20 +77,25 @@ class Problems extends Component {
     }
 
     return (
-      <div>
-        <Table style={{ width: '60%' }}>
-          <thead>
-            <tr>
-              <th> Name </th>
-              <th> Code </th>
-              <th> Successful submissions </th>
-              <th> Accuracy </th>
-            </tr>
-          </thead>
-          <tbody>
-            {items}
-          </tbody>
-        </Table>
+      <div style={{display: 'flex'}}>
+        <div>
+          <Table style={{ width: '60%' }}>
+            <thead>
+              <tr>
+                <th> Name </th>
+                <th> Code </th>
+                <th> Successful submissions </th>
+                <th> Accuracy </th>
+              </tr>
+            </thead>
+            <tbody>
+              {items}
+            </tbody>
+          </Table>
+        </div>
+        <div>
+          <Countdown />
+        </div>
       </div>
     )
   }
