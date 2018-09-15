@@ -77,7 +77,7 @@ class Problems extends Component {
     }
 
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
         <div>
           <Table bordered={true}>
             <thead>
