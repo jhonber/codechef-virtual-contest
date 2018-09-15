@@ -56,7 +56,7 @@ module.exports = {
       });
   },
 
-  getRequest: function (url, token, cb) {
+  getSecureRequest: function (url, token, cb) {
     superagent
       .get(url)
       .set('Authorization', 'Bearer ' + token)
@@ -83,6 +83,21 @@ module.exports = {
           console.log('err: ', err);
           cb(err);
         }
+      });
+  },
+
+  getRequest: function (url, cb) {
+    superagent
+      .get(url)
+      .end(function (err, res) {
+        console.log("HERE")
+        console.log(err)
+        console.log(res)
+        if (err) {
+          if (res) cb(true, res.text);
+          else cb(true, err);
+        }
+        else cb(false, res);
       });
   },
 

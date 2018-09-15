@@ -36,7 +36,7 @@ class App extends Component {
     var what = this;
     url += config.url_user;
     var token = window.localStorage.getItem('access_token');
-    Utils.getRequest(url, token, function (err, data) {
+    Utils.getSecureRequest(url, token, function (err, data) {
       if (!err) {
         what.setState({ userInfo: data });
         window.localStorage.user = data.username;

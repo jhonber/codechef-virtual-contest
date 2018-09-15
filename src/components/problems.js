@@ -21,7 +21,7 @@ class Problems extends Component {
     url += '/contests/' + this.state.contestCode;
     var token = window.localStorage.access_token;
     var what = this;
-    Utils.getRequest(url, token, function (err, res) {
+    Utils.getSecureRequest(url, token, function (err, res) {
 
       if (!err) {
         var problems = res.problemsList;
@@ -37,7 +37,7 @@ class Problems extends Component {
             what.state.contestCode + '/problems/' + cur_code;
 
           if (!window.localStorage.getItem(cur_code) || window.localStorage.getItem(cur_code) == '') {
-            Utils.getRequest(cur_url, token, function (err, res) {
+            Utils.getSecureRequest(cur_url, token, function (err, res) {
               if (!err) {
                 problems[i].problemName = res.problemName;
                 window.localStorage.setItem(cur_code, res.problemName);
