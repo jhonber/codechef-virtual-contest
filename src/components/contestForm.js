@@ -98,9 +98,7 @@ class ContestForm extends Component {
       )
     }
     else {
-      window.localStorage.setItem('contestName', this.props.contestName);
-      window.localStorage.setItem('startTime', this.state.startTime);
-      Utils.moveTo('/countdown/' + this.props.contestCode);
+      Utils.moveTo('/countdown');
     }
   }
 }
