@@ -93,6 +93,7 @@ module.exports = {
         console.log("HERE")
         console.log(err)
         console.log(res)
+        res = res.body;
         if (err) {
           if (res) cb(true, res.text);
           else cb(true, err);
