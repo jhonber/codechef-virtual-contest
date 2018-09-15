@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import Utils from './utils';
 var moment = require('moment');
+var config = require('../config-dev.json');
 
 class Countdown extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      startTime: window.localStorage.startTime,
+      contestCode: '',
+      startTime: null,
+      endTime: null,
       hours: '00',
       minutes: '00',
       seconds: '00'
@@ -17,28 +20,52 @@ class Countdown extends Component {
   }
 
   componentDidMount() {
-    this.refresh();
-    setInterval(() => {
-      this.refresh();
-    }, 1000);
+    var user = window.localStorage.user;
+    var url = config.url_backend + '/contest/last/' + user
+    var what = this;
+
+    Utils.getRequest(url, function (err, res) {
+      if (!err) {
+        console.log('res: ', res);
+
+        var startTime = new Date(res.startTime);
+        var endTime = moment(startTime).add(parseInt(res.duration), 'm').toDate();
+
+        what.setState({ contestCode: res.code, startTime: startTime, endTime: endTime });
+
+        what.refresh();
+        setInterval(() => what.refresh(), 1000);
+      }
+      else {
+        alert(res);
+      }
+    });
   }
 
   refresh() {
-    var start_time = new Date(this.state.startTime);
-    var cur_time = new Date();
-    if (start_time == 'Invalid Date' || start_time <= cur_time) {
-      this.setState({ hours: '00', minutes: '00', seconds: '00' });
-      Utils.moveTo('/problems/' + this.props.contestCode);
+    var curTime = new Date();
+    var timeA = curTime;
+    var timeB = curTime;
+
+    if (curTime > this.state.startTime && curTime < this.state.endTime) {
+      timeA = this.state.endTime;
+    }
+    else if (curTime < this.state.startTime) {
+      timeA = this.state.startTime;
     }
 
-    var rest = moment(start_time).subtract(cur_time.getHours(), 'hours').toDate();
-    rest = moment(rest).subtract(cur_time.getMinutes(), 'minutes').toDate();
-    rest = moment(rest).subtract(cur_time.getSeconds(), 'seconds').toDate();
+    function subtract(a, b) {
+      var ans = moment(a).subtract(b.getHours(), 'hours').toDate();
+      ans = moment(ans).subtract(b.getMinutes(), 'minutes').toDate();
+      ans = moment(ans).subtract(b.getSeconds(), 'seconds').toDate();
+      return ans;
+    }
 
     function normalize(n) {
       return (n < 10 ? '0' + n : n);
     }
 
+    var rest = subtract(timeA, timeB);
     var hours = normalize(rest.getHours());
     var minutes = normalize(rest.getMinutes());
     var seconds = normalize(rest.getSeconds());
@@ -47,19 +74,38 @@ class Countdown extends Component {
   }
 
   render() {
-    var counter = <p
-      style={{ fontSize: 25, margin: 0, padding: 0 }}>
-      {this.state.hours}:{this.state.minutes}:{this.state.seconds}
-    </p>
+    if (this.state.startTime) {
+      var counter = <p
+        style={{ fontSize: 25, margin: 0, padding: 0 }}>
+        {this.state.hours}:{this.state.minutes}:{this.state.seconds}
+      </p>
 
+      var msj = 'Contest has ended'
+      var curTime = new Date();
+      if (curTime > this.state.startTime && curTime < this.state.endTime) {
+        if (this.props.redirect) {
+          Utils.moveTo('/problems/' + this.state.contestCode);
+        }
 
-    return (
-      <div style={{ textAlign: 'center', justifyContent: 'center' }}>
-        <h1> {window.localStorage.contestName} </h1>
-        <p style={{ fontSize: 25, paddingBottom: 0, marginTop: 50, marginBottom: 0 }}> Before contest start </p>
-        {counter}
-      </div>
-    )
+        msj = 'Running'
+      }
+      else if (curTime < this.state.startTime) {
+        msj = 'Before start'
+      }
+
+      return (
+        <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+          <h1> {window.localStorage.contestName} </h1>
+          <p style={{ fontSize: 25, paddingBottom: 0, marginTop: 50, marginBottom: 0 }}> {msj} </p>
+          {counter}
+        </div>
+      )
+    }
+    else {
+      return (
+        <div> </div>
+      )
+    }
   }
 }
 
