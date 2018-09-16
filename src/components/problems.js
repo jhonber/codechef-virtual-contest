@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import classnames from 'classnames';
+
 import Utils from './utils';
-import { Table } from 'reactstrap';
 import Countdown from './countdown';
 
 var config = require('../config-dev.json');
@@ -14,7 +16,16 @@ class Problems extends Component {
     this.state = {
       contestCode: this.props.contestCode,
       contestName: '',
-      problems: []
+      problems: [],
+      activeTab: '1'
+    }
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
     }
   }
 
@@ -76,26 +87,65 @@ class Problems extends Component {
       });
     }
 
+    var problemsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+      <div>
+        <Table bordered={true}>
+          <thead>
+            <tr>
+              <th> Name </th>
+              <th> Code </th>
+              <th> Successful submissions </th>
+              <th> Accuracy </th>
+            </tr>
+          </thead>
+          <tbody>
+            {items}
+          </tbody>
+        </Table>
+      </div>
+      <div style={{ marginLeft: 20 }}>
+        <Countdown style={{ justifyContent: 'center', textAlign: 'center' }} />
+      </div>
+    </div>
+
+    var standingsView = null;
+
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
-        <div>
-          <Table bordered={true}>
-            <thead>
-              <tr>
-                <th> Name </th>
-                <th> Code </th>
-                <th> Successful submissions </th>
-                <th> Accuracy </th>
-              </tr>
-            </thead>
-            <tbody>
-              {items}
-            </tbody>
-          </Table>
-        </div>
-        <div style={{ marginLeft: 20 }}>
-          <Countdown style={{ justifyContent: 'center', textAlign: 'center' }} />
-        </div>
+      <div>
+        <Nav tabs style={{ justifyContent: 'center', textAlign: 'center' }}>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '1' })}
+              onClick={() => { this.toggle('1'); }}
+            >
+              Problems
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '2' })}
+              onClick={() => { this.toggle('2'); }}
+            >
+              Standings
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="1">
+            <Row>
+              <Col>
+                {problemsView}
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
+            <Row>
+              <Col sm="6">
+                {standingsView}
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
       </div>
     )
   }
