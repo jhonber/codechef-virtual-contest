@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import Utils from './utils';
 import Countdown from './countdown';
+import Standings from './standings';
 
 var config = require('../config-dev.json');
 var url = config.url_base;
@@ -108,7 +109,7 @@ class Problems extends Component {
       </div>
     </div>
 
-    var standingsView = null;
+    var standingsView = <Standings />;
 
     return (
       <div>
@@ -140,7 +141,7 @@ class Problems extends Component {
           </TabPane>
           <TabPane tabId="2">
             <Row>
-              <Col sm="6">
+              <Col>
                 {standingsView}
               </Col>
             </Row>
