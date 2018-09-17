@@ -68,7 +68,10 @@ module.exports = {
           if (!err) {
             if ('status' in data) {
               if (data.status == 'OK') {
-                cb(false, data.result.data.content);
+                if ('content' in data.result.data)
+                  cb(false, data.result.data.content);
+                else
+                  cb(true, data.result.data.message);
               }
               else {
                 cb(true, data.result.errors[0]);
