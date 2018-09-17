@@ -1,102 +1,104 @@
 import React, { Component } from 'react';
-import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
-
+import { Table } from 'reactstrap';
 import Utils from './utils';
-import Countdown from './countdown';
 
 var config = require('../config-dev.json');
 var url = config.url_base;
-var url_problem = config.url_main;
 
 class Standings extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      username: 'jh000n',
       rank: '1',
-      score: 100,
-      problems: []
+      problems: [],
+      verdict: {}
     }
   }
 
-  componentDidMount() {
-    url += '/contests/' + this.state.contestCode;
-    // request current submissions
-    var problems = [{
-      "problemCode": "ARGTS",
-      "solved": true,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 3,
-      "score": 200,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    },
-    {
-      "problemCode": "CHFDT",
-      "solved": false,
-      "tries": 0,
-      "score": 100,
-    }];
+  componentWillReceiveProps(next_props) {
+    url += '/submissions/?username=' + window.localStorage.user +
+      '&contestCode=PRACTICE&fields=id%2Cdate%2CproblemCode%2Cresult';
 
-    this.setState({ problems: problems });
+    this.setState({ problems: this.props.problems });
+
+    var token = window.localStorage.access_token;
+    var what = this;
+    var verdict = {};
+
+    Utils.getSecureRequest(url, token, function (err, res) {
+      if (!err) {
+        process(0);
+
+        function process(i) {
+          if (i == res.length) {
+            what.setState({ verdict: verdict });
+            return;
+          }
+          else {
+            var code = res[i].problemCode;
+
+            if (code in verdict) {
+              var cur = verdict[code];
+              cur.tries++;
+
+              if (res[i].result == 'AC') {
+                cur.solved = true;
+                cur.date = res[i].date
+              }
+            }
+            else {
+              verdict[code] = {
+                date: res[i].date,
+                solved: (res[i].result == 'AC'),
+                tries: 1
+              }
+            }
+            process(i + 1);
+          }
+        }
+      }
+      else {
+        console.log(res)
+      }
+    });
   }
 
   render() {
-    var problems = null;
+    var problemCodes = null;
     if (this.state.problems.length > 0) {
-      problems = this.state.problems.map(function (i) {
+      problemCodes = this.state.problems.map(function (i) {
         return (
-          <th> {i.problemCode} </th>
+          <th key={i.problemCode}> {i.problemCode} </th>
         )
       });
     }
 
-    var verdict = null;
+    var result = null;
+    var verdict = this.state.verdict;
     if (this.state.problems.length > 0) {
-      verdict = this.state.problems.map(function (i) {
+      result = this.state.problems.map(function (i) {
+        var solved = '';
+        var tries = 0;
+        var time = '';
+        if (i.problemCode in verdict) {
+          tries = verdict[i.problemCode].tries;
+          solved = verdict[i.problemCode].solved ? '+' : (tries ? '-' : '');
+          if (solved == '+') {
+            tries --;
+            time = ''//TODO: set time after contest start
+          }
+        }
+
         return (
-          <td> {i.solved ? i.score : ''} - ({i.tries}) </td>
+          <td key={i.problemCode}>
+            <div>
+              {solved}{tries ? tries : ''}
+            </div>
+            <div>
+              {(solved == '+' ? time : '')}
+            </div>
+          </td >
         )
       });
     }
@@ -105,25 +107,23 @@ class Standings extends Component {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
         <div>
           <Table striped>
-            <thead>
+            <thead style={{ textAlign: 'center' }}>
               <tr>
                 <th> # Rank </th>
                 <th> User Name </th>
-                <th> Score </th>
-                {problems}
+                {problemCodes}
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{ textAlign: 'center' }}>
               <tr>
                 <td> {this.state.rank} </td>
-                <td> {this.state.username} </td>
-                <td> {this.state.score} </td>
-                {verdict}
+                <td> {window.localStorage.user} </td>
+                {result}
               </tr>
             </tbody>
           </Table>
         </div>
-      </div>
+      </div >
     )
   }
 }

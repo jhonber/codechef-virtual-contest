@@ -109,7 +109,9 @@ class Problems extends Component {
       </div>
     </div>
 
-    var standingsView = <Standings />;
+    var standingsView = <Standings
+      problems={this.state.problems}
+    />;
 
     return (
       <div>
