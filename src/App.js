@@ -4,7 +4,7 @@ import Utils from './components/utils'
 import { Jumbotron, Container, Button } from 'reactstrap'
 
 var config = require('./config-dev.json')
-var url = config.url_base
+const url = config.urlBase
 
 class App extends Component {
   constructor (props) {
@@ -33,9 +33,9 @@ class App extends Component {
 
   handleInfoUser () {
     var what = this
-    url += config.url_user
+    const userURL = url + config.urlUser
     var token = window.localStorage.getItem('access_token')
-    Utils.getSecureRequest(url, token, function (err, data) {
+    Utils.getSecureRequest(userURL, token, function (err, data) {
       if (!err) {
         what.setState({ userInfo: data })
         window.localStorage.user = data.username
@@ -57,11 +57,11 @@ class App extends Component {
     var loginButton = (!this.state.logged ? <Button
       color='primary'
       onClick={() => {
-        url += config.url_authorize + '?response_type=code&client_id=' +
-          config.client_id + '&state=xyz&redirect_uri=' + config.url_redirect
+        const callbackURL = url + config.urlAuthorize + '?response_type=code&client_id=' +
+          config.clientId + '&state=xyz&redirect_uri=' + config.urlRedirect
 
-        window.location = url
-        Utils.moveTo(url)
+        window.location = callbackURL
+        Utils.moveTo(callbackURL)
       }}
     >
       Login

@@ -3,7 +3,7 @@ import { Table } from 'reactstrap'
 import Utils from './utils'
 
 var config = require('../config-dev.json')
-const url = config.url_base
+const url = config.urlBase
 
 class Standings extends Component {
   constructor (props) {

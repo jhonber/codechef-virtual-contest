@@ -1,21 +1,21 @@
 var superagent = require('superagent')
 var config = require('../config-dev.json')
-var url = config.url_base
-const backendURL = config.url_backend
+const url = config.urlBase
+const backendURL = config.urlBackend
 
 module.exports = {
   getTokenFirstTime: function (code, cb) {
-    url += config.url_token
+    const tokenURL = url + config.urlToken
     var data = {
       'grant_type': 'authorization_code',
       'code': code,
       'client_id': config.clientID,
       'client_secret': config.clientSecret,
-      'redirect_uri': config.url_redirect
+      'redirect_uri': config.urlRedirect
     }
 
     superagent
-      .post(url)
+      .post(tokenURL)
       .send(data)
       .end(function (err, res) {
         res = res.body
@@ -38,7 +38,7 @@ module.exports = {
   },
 
   refreshToken: function () {
-    url += config.url_token
+    const tokenURL = url + config.urlToken
     var data = {
       'grant_type': 'refresh_token',
       'refresh_token': window.localStorage.refresh_token,
@@ -47,7 +47,7 @@ module.exports = {
     }
 
     superagent
-      .post(url)
+      .post(tokenURL)
       .send(data)
       .end(function (err, res) {
         res = res.body
@@ -67,10 +67,10 @@ module.exports = {
       .get(url)
       .set('Authorization', 'Bearer ' + token)
       .end(function (err, res) {
+        console.log('RESPONSE', err, res.body)
         if (!err) {
           var data = res.body
-          console.log('data:')
-          console.log(data)
+          console.log('data:', data)
           if (!err) {
             if ('status' in data) {
               if (data.status === 'OK') {

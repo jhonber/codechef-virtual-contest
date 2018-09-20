@@ -4,7 +4,7 @@ import { Alert, Form, FormGroup, Button, Label, Input, FormText, FormFeedback } 
 var moment = require('moment')
 
 var config = require('../config-dev.json')
-var url = config.url_base
+var url = config.urlBase
 
 class ContestForm extends Component {
   constructor (props) {
@@ -28,7 +28,7 @@ class ContestForm extends Component {
     var val = this.state.minutesBeforeStart
 
     if (isNumber(val) && val >= 5 && val <= 60) {
-      url = config.url_backend + '/contest'
+      url = config.urlBackend + '/contest'
       const startTime = moment(new Date()).add(this.state.minutesBeforeStart, 'm').toDate()
       this.setState({ startTime: startTime })
 

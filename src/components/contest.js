@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Utils from './utils'
 import { Table, Button } from 'reactstrap'
 
-var config = require('../config-dev.json')
-var url = config.url_base
+const config = require('../config-dev.json')
+const url = config.urlBase
 
 class Contest extends Component {
   constructor (props) {
@@ -23,9 +23,9 @@ class Contest extends Component {
   handleContests () {
     var what = this
     var token = window.localStorage.getItem('access_token')
-    url += '/contests?status=past&limit=10'
+    const contestURL = url + '/contests?status=past&limit=10'
 
-    Utils.getSecureRequest(url, token, function (err, data) {
+    Utils.getSecureRequest(contestURL, token, function (err, data) {
       if (!err) {
         what.setState({ valid_api_token: true, contestList: data.contestList })
         console.log(data.contestList)
@@ -44,7 +44,7 @@ class Contest extends Component {
     var mainView = null
 
     if (this.state.valid_api_token && this.state.contestList) {
-      const urlContest = config.url_main + '/'
+      const urlContest = config.urlMain + '/'
       items = this.state.contestList.map(function (i) {
         return (<tr key={i.code}>
           <td>
