@@ -54,7 +54,7 @@ function startOAuth2(context) {
 }
 
 Page('/', startHomeView);
-Page('/OAuth2', startOAuth2);
+Page('/auth/codechef/callback', startOAuth2);
 Page('/contest/:code/:name', startVirtualContestForm);
 Page('/problems/:code', startProblemsView);
 Page('/countdown', startCountdownView);
