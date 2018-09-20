@@ -28,7 +28,7 @@ class Countdown extends Component {
         console.log('res: ', res)
 
         var startTime = new Date(res.startTime)
-        var endTime = moment(startTime).add(parseInt(res.duration), 'm').toDate()
+        var endTime = moment(startTime).add(parseInt(res.duration, 10), 'm').toDate()
 
         what.setState({ contestCode: res.code, startTime: startTime, endTime: endTime })
 
