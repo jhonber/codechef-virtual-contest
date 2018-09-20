@@ -18,11 +18,11 @@ class App extends Component {
 
   componentDidMount () {
     var what = this
-    Utils.checkLocalStorage(function (res) {
-      if (!res) {
+    Utils.checkLocalStorage(function (err) {
+      if (err) {
         what.setState({ localStorageSupported: false })
       } else {
-        const refreshToken = window.localStorage.getItem('refreshToken')
+        const refreshToken = window.localStorage.getItem('refresh_token')
         if (refreshToken && refreshToken !== '') {
           what.setState({ logged: true })
           what.handleInfoUser()
