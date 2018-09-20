@@ -1,6 +1,7 @@
 var superagent = require('superagent');
 var config = require('../config-dev.json');
 var url = config.url_base;
+const backendURL = config.url_backend
 
 module.exports = {
   getTokenFirstTime: function (code, cb) {
@@ -20,14 +21,20 @@ module.exports = {
         res = res.body
         console.log("RES")
         console.log(res)
-        if ("status" in res && res.status == 'OK') {
-          cb(false, res.result.data);
-        }
-        else {
+        if (!err && ("status" in res && res.status == 'OK')) {
+          console.log(`${backendURL}/auth/login`)
+          superagent
+            .post(`${backendURL}/auth/login`)
+            .send(res.result.data)
+            .end(function (err, res) {
+              if (err) return cb(err)
+              cb(null, res.body)
+            })
+        } else {
           console.log('Error: ', res)
-          cb(true, res.result.errors.message);
+          cb(res.result.errors.message)
         }
-      });
+      })
   },
 
   refreshToken: function () {

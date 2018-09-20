@@ -48,7 +48,7 @@ function startOAuth2(context) {
       Utils.moveTo('/');
     }
     else {
-      alert(data);
+      alert(err);
     }
   });
 }
