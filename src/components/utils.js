@@ -6,7 +6,7 @@ const backendURL = config.urlBackend
 module.exports = {
   getTokenFirstTime: function (code, cb) {
     const tokenURL = url + config.urlToken
-    var data = {
+    const data = {
       'grant_type': 'authorization_code',
       'code': code,
       'client_id': config.clientID,
@@ -39,7 +39,7 @@ module.exports = {
 
   refreshToken: function () {
     const tokenURL = url + config.urlToken
-    var data = {
+    const data = {
       'grant_type': 'refresh_token',
       'refresh_token': window.localStorage.refresh_token,
       'client_id': config.clientID,
@@ -67,7 +67,6 @@ module.exports = {
       .get(url)
       .set('Authorization', 'Bearer ' + token)
       .end(function (err, res) {
-        console.log('RESPONSE', err, res.body)
         if (!err) {
           var data = res.body
           console.log('data:', data)

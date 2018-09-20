@@ -58,7 +58,7 @@ class App extends Component {
       color='primary'
       onClick={() => {
         const callbackURL = url + config.urlAuthorize + '?response_type=code&client_id=' +
-          config.clientId + '&state=xyz&redirect_uri=' + config.urlRedirect
+          config.clientID + '&state=xyz&redirect_uri=' + config.urlRedirect
 
         window.location = callbackURL
         Utils.moveTo(callbackURL)
