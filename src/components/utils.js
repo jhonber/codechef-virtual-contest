@@ -1,17 +1,17 @@
-var superagent = require('superagent');
-var config = require('../config-dev.json');
-var url = config.url_base;
+var superagent = require('superagent')
+var config = require('../config-dev.json')
+var url = config.url_base
 const backendURL = config.url_backend
 
 module.exports = {
   getTokenFirstTime: function (code, cb) {
-    url += config.url_token;
+    url += config.url_token
     var data = {
-      "grant_type": "authorization_code",
-      "code": code,
-      "client_id": config.client_id,
-      "client_secret": config.client_secret,
-      "redirect_uri": config.url_redirect
+      'grant_type': 'authorization_code',
+      'code': code,
+      'client_id': config.clientID,
+      'client_secret': config.clientSecret,
+      'redirect_uri': config.url_redirect
     }
 
     superagent
@@ -19,9 +19,9 @@ module.exports = {
       .send(data)
       .end(function (err, res) {
         res = res.body
-        console.log("RES")
+        console.log('RES')
         console.log(res)
-        if (!err && ("status" in res && res.status == 'OK')) {
+        if (!err && ('status' in res && res.status === 'OK')) {
           console.log(`${backendURL}/auth/login`)
           superagent
             .post(`${backendURL}/auth/login`)
@@ -38,29 +38,28 @@ module.exports = {
   },
 
   refreshToken: function () {
-    url += config.url_token;
+    url += config.url_token
     var data = {
-      "grant_type": "refresh_token",
-      "refresh_token": window.localStorage.refresh_token,
-      "client_id": config.client_id,
-      "client_secret": config.client_secret
+      'grant_type': 'refresh_token',
+      'refresh_token': window.localStorage.refresh_token,
+      'client_id': config.clientID,
+      'client_secret': config.clientSecret
     }
 
     superagent
       .post(url)
       .send(data)
       .end(function (err, res) {
-        res = res.body;
-        if ("status" in res && res.status == 'OK') {
-          var data = res.result.data;
-          window.localStorage.setItem('access_token', data.access_token);
-          window.localStorage.setItem('refresh_token', data.refresh_token);
+        res = res.body
+        if (!err && ('status' in res && res.status === 'OK')) {
+          var data = res.result.data
+          window.localStorage.setItem('access_token', data.access_token)
+          window.localStorage.setItem('refresh_token', data.refresh_token)
+        } else {
+          console.log('Error: ', err, res)
+          module.exports.logout()
         }
-        else {
-          console.log('Error: ', res)
-          module.exports.logout();
-        }
-      });
+      })
   },
 
   getSecureRequest: function (url, token, cb) {
@@ -69,46 +68,39 @@ module.exports = {
       .set('Authorization', 'Bearer ' + token)
       .end(function (err, res) {
         if (!err) {
-          var data = res.body;
-          console.log("data:")
+          var data = res.body
+          console.log('data:')
           console.log(data)
           if (!err) {
             if ('status' in data) {
-              if (data.status == 'OK') {
-                if ('content' in data.result.data)
-                  cb(false, data.result.data.content);
-                else
-                  cb(true, data.result.data.message);
-              }
-              else {
-                cb(true, data.result.errors[0]);
+              if (data.status === 'OK') {
+                if ('content' in data.result.data) { cb(null, data.result.data.content) } else { cb(data.result.data.message) }
+              } else {
+                cb(data.result.errors[0])
               }
             }
+          } else {
+            cb(err)
           }
-          else {
-            cb(true, err);
-          }
+        } else {
+          console.log('err: ', err)
+          cb(err)
         }
-        else {
-          console.log('err: ', err);
-          cb(err);
-        }
-      });
+      })
   },
 
   getRequest: function (url, cb) {
     superagent
       .get(url)
       .end(function (err, res) {
-        console.log("HERE")
+        console.log('HERE')
         console.log(err)
         console.log(res)
         if (err) {
-          if (res) cb(true, res.text);
-          else cb(true, err);
-        }
-        else cb(false, res.body);
-      });
+          if (res) cb(res.text)
+          else cb(err)
+        } else cb(null, res.body)
+      })
   },
 
   postRequest: function (url, data, cb) {
@@ -117,34 +109,32 @@ module.exports = {
       .send(data)
       .end(function (err, res) {
         if (err) {
-          if (res) cb(true, res.text);
-          else cb(true, err);
-        }
-        else cb(false, res);
-      });
+          if (res) cb(res.text)
+          else cb(err)
+        } else cb(null, res)
+      })
   },
 
   checkLocalStorage: function (cb) {
-    function check() {
-      var test = 'test';
+    function check () {
+      var test = 'test'
       try {
-        localStorage.setItem(test, test);
-        localStorage.removeItem(test);
-        cb(true);
+        window.localStorage.setItem(test, test)
+        window.localStorage.removeItem(test)
+        cb()
       } catch (e) {
-        cb(false);
+        cb(e)
       }
     }
-
-    check();
+    check()
   },
 
   moveTo: function (to) {
-    window.location = to;
+    window.location = to
   },
 
   logout: function () {
-    window.localStorage.clear();
-    module.exports.moveTo('/');
+    window.localStorage.clear()
+    module.exports.moveTo('/')
   }
-};
+}

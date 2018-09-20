@@ -1,11 +1,11 @@
 {
-  "url_base": "https://api.codechef.com",
-  "url_authorize": "/oauth/authorize",
-  "url_token": "/oauth/token",
-  "url_redirect": "http://localhost:3000/auth/codechef/callback",
-  "client_id": "76ffa84f57f0276abcbc5d8ecc246691",
-  "client_secret": "ed3f09a2110901436e901b998494341f",
-  "url_user": "/users/me",
-  "url_main": "https://www.codechef.com",
-  "url_backend": "http://localhost:3333"
+  "urlBase": "https://api.codechef.com",
+  "urlAuthorize": "/oauth/authorize",
+  "urlToken": "/oauth/token",
+  "urlRedirect": "http://localhost:3000/auth/codechef/callback",
+  "clientID": "76ffa84f57f0276abcbc5d8ecc246691",
+  "clientSecret": "ed3f09a2110901436e901b998494341f",
+  "urlUser": "/users/me",
+  "urlMain": "https://www.codechef.com",
+  "urlBackend": "http://localhost:3333"
 }

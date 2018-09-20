@@ -1,68 +1,66 @@
-import React, { Component } from 'react';
-import Utils from './utils';
-import { Table, Button } from 'reactstrap';
+import React, { Component } from 'react'
+import Utils from './utils'
+import { Table, Button } from 'reactstrap'
 
-var config = require('../config-dev.json');
-var url = config.url_base;
+var config = require('../config-dev.json')
+var url = config.url_base
 
 class Contest extends Component {
-
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       valid_api_token: false,
       contestList: []
     }
 
-    this.handleContests = this.handleContests.bind(this);
+    this.handleContests = this.handleContests.bind(this)
   }
 
-  componentDidMount() {
-    this.handleContests();
+  componentDidMount () {
+    this.handleContests()
   }
 
-  handleContests() {
-    var what = this;
-    var token = window.localStorage.getItem('access_token');
-    url += '/contests?status=past&limit=10';
+  handleContests () {
+    var what = this
+    var token = window.localStorage.getItem('access_token')
+    url += '/contests?status=past&limit=10'
 
     Utils.getSecureRequest(url, token, function (err, data) {
       if (!err) {
-        what.setState({ valid_api_token: true, contestList: data.contestList });
+        what.setState({ valid_api_token: true, contestList: data.contestList })
         console.log(data.contestList)
-      }
-      else {
-        what.setState({ valid_api_token: false, contestList: [] });
-        if (window.localStorage.refresh_token && window.localStorage.refresh_token != '') {
-          Utils.refreshToken();
+      } else {
+        what.setState({ valid_api_token: false, contestList: [] })
+        if (window.localStorage.refresh_token && window.localStorage.refresh_token !== '') {
+          Utils.refreshToken()
         }
-        console.log("Error retrieving data: ", err);
+        console.log('Error retrieving data: ', err)
       }
-    });
+    })
   }
 
-  render() {
-    var items = null;
-    var mainView = null;
+  render () {
+    var items = null
+    var mainView = null
 
     if (this.state.valid_api_token && this.state.contestList) {
-      var url_contest = config.url_main + '/';
+      const urlContest = config.url_main + '/'
       items = this.state.contestList.map(function (i) {
         return (<tr key={i.code}>
           <td>
-            <a target="_blank" href={url_contest + i.code}> {i.name} </a>
+            <a target='_blank' href={urlContest + i.code}> {i.name} </a>
           </td>
           <td>
             <Button
-              color="success"
-              size="sm"
+              color='success'
+              size='sm'
               onClick={() => { window.location = '/contest/' + i.code + '/' + i.name }} >
               Practice
             </Button>{' '}
           </td>
         </tr>
         )
-      });
+      })
 
       mainView = <div style={{ textAlign: 'center' }}>
         <h4> List of contests </h4>
@@ -84,4 +82,4 @@ class Contest extends Component {
   }
 }
 
-export default Contest;
+export default Contest

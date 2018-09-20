@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import Utils from './utils';
-var moment = require('moment');
-var config = require('../config-dev.json');
+import React, { Component } from 'react'
+import Utils from './utils'
+var moment = require('moment')
+var config = require('../config-dev.json')
 
 class Countdown extends Component {
-
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       contestCode: '',
       startTime: null,
@@ -16,64 +15,62 @@ class Countdown extends Component {
       seconds: '00'
     }
 
-    this.refresh = this.refresh.bind(this);
+    this.refresh = this.refresh.bind(this)
   }
 
-  componentDidMount() {
-    var user = window.localStorage.user;
+  componentDidMount () {
+    var user = window.localStorage.user
     var url = config.url_backend + '/contest/last/' + user
-    var what = this;
+    var what = this
 
     Utils.getRequest(url, function (err, res) {
       if (!err) {
-        console.log('res: ', res);
+        console.log('res: ', res)
 
-        var startTime = new Date(res.startTime);
-        var endTime = moment(startTime).add(parseInt(res.duration), 'm').toDate();
+        var startTime = new Date(res.startTime)
+        var endTime = moment(startTime).add(parseInt(res.duration), 'm').toDate()
 
-        what.setState({ contestCode: res.code, startTime: startTime, endTime: endTime });
+        what.setState({ contestCode: res.code, startTime: startTime, endTime: endTime })
 
-        what.refresh();
-        setInterval(() => what.refresh(), 1000);
+        what.refresh()
+        setInterval(() => what.refresh(), 1000)
+      } else {
+        window.alert(res)
       }
-      else {
-        alert(res);
-      }
-    });
+    })
   }
 
-  refresh() {
-    var curTime = new Date();
-    var timeA = curTime;
-    var timeB = curTime;
+  refresh () {
+    var curTime = new Date()
+    var timeA = curTime
+    var timeB = curTime
 
     if (curTime > this.state.startTime && curTime < this.state.endTime) {
-      timeA = this.state.endTime;
-    }
-    else if (curTime < this.state.startTime) {
-      timeA = this.state.startTime;
-    }
-
-    function subtract(a, b) {
-      var ans = moment(a).subtract(b.getHours(), 'hours').toDate();
-      ans = moment(ans).subtract(b.getMinutes(), 'minutes').toDate();
-      ans = moment(ans).subtract(b.getSeconds(), 'seconds').toDate();
-      return ans;
+      timeA = this.state.endTime
+    } else if (curTime < this.state.startTime) {
+      timeA = this.state.startTime
     }
 
-    function normalize(n) {
-      return (n < 10 ? '0' + n : n);
+    function subtract (a, b) {
+      var ans = moment(a).subtract(b.getHours(), 'hours').toDate()
+      ans = moment(ans).subtract(b.getMinutes(), 'minutes').toDate()
+      ans = moment(ans).subtract(b.getSeconds(), 'seconds').toDate()
+      return ans
     }
 
-    var rest = subtract(timeA, timeB);
-    var hours = normalize(rest.getHours());
-    var minutes = normalize(rest.getMinutes());
-    var seconds = normalize(rest.getSeconds());
+    function normalize (n) {
+      return (n < 10 ? '0' + n : n)
+    }
 
-    this.setState({ hours: hours, minutes: minutes, seconds: seconds });
+    var rest = subtract(timeA, timeB)
+    var hours = normalize(rest.getHours())
+    var minutes = normalize(rest.getMinutes())
+    var seconds = normalize(rest.getSeconds())
+
+    this.setState({ hours: hours, minutes: minutes, seconds: seconds })
   }
 
-  render() {
+  render () {
     if (this.state.startTime) {
       var counter = <p
         style={{ fontSize: 25, margin: 0, padding: 0 }}>
@@ -81,19 +78,18 @@ class Countdown extends Component {
       </p>
 
       var msj = 'Contest has ended'
-      var curTime = new Date();
+      var curTime = new Date()
       if (curTime > this.state.startTime && curTime < this.state.endTime) {
         if (this.props.redirect) {
-          Utils.moveTo('/problems/' + this.state.contestCode);
+          Utils.moveTo('/problems/' + this.state.contestCode)
         }
 
         msj = 'Running'
-      }
-      else if (curTime < this.state.startTime) {
+      } else if (curTime < this.state.startTime) {
         msj = 'Before start'
       }
 
-      var default_style = {
+      var defaultStyle = {
         textAlign: 'center',
         justifyContent: 'center',
         fontSize: 25,
@@ -102,7 +98,7 @@ class Countdown extends Component {
         marginBottom: 0
       }
 
-      var style = (this.props.style ? this.props.style : default_style);
+      var style = (this.props.style ? this.props.style : defaultStyle)
 
       return (
         <div style={style}>
@@ -111,13 +107,12 @@ class Countdown extends Component {
           {counter}
         </div>
       )
-    }
-    else {
+    } else {
       return (
-        <div> </div>
+        <div />
       )
     }
   }
 }
 
-export default Countdown;
+export default Countdown

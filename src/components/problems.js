@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
-import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
+import React, { Component } from 'react'
+import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap'
+import classnames from 'classnames'
 
-import Utils from './utils';
-import Countdown from './countdown';
-import Standings from './standings';
+import Utils from './utils'
+import Countdown from './countdown'
+import Standings from './standings'
 
-var config = require('../config-dev.json');
-var url = config.url_base;
-var url_problem = config.url_main;
+const config = require('../config-dev.json')
+const url = config.url_base
+const urlProblem = config.url_main
 
 class Problems extends Component {
-
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       contestCode: this.props.contestCode,
       contestName: '',
@@ -22,75 +21,72 @@ class Problems extends Component {
     }
   }
 
-  toggle(tab) {
+  toggle (tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
-      });
+      })
     }
   }
 
-  componentDidMount() {
-    url += '/contests/' + this.state.contestCode;
-    var token = window.localStorage.access_token;
-    var what = this;
-    Utils.getSecureRequest(url, token, function (err, res) {
-
+  componentDidMount () {
+    const contestUrl = url + '/contests/' + this.state.contestCode
+    var token = window.localStorage.access_token
+    var what = this
+    Utils.getSecureRequest(contestUrl, token, function (err, res) {
       if (!err) {
-        var problems = res.problemsList;
-        process(0);
+        var problems = res.problemsList
+        process(0)
 
-        function process(i) {
-          if (i == problems.length) {
-            what.setState({ contestName: res.name, contestCode: res.code, problems: problems });
-            return;
+        function process (i) {
+          if (i === problems.length) {
+            what.setState({ contestName: res.name, contestCode: res.code, problems: problems })
+            return
           }
-          var cur_code = problems[i].problemCode;
-          var cur_url = config.url_base + '/contests/' +
-            what.state.contestCode + '/problems/' + cur_code;
+          var curCode = problems[i].problemCode
+          var curURL = config.url_base + '/contests/' +
+            what.state.contestCode + '/problems/' + curCode
 
-          if (!window.localStorage.getItem(cur_code) || window.localStorage.getItem(cur_code) == '') {
-            Utils.getSecureRequest(cur_url, token, function (err, res) {
+          if (!window.localStorage.getItem(curCode) || window.localStorage.getItem(curCode) === '') {
+            Utils.getSecureRequest(curURL, token, function (err, res) {
               if (!err) {
-                problems[i].problemName = res.problemName;
-                window.localStorage.setItem(cur_code, res.problemName);
+                problems[i].problemName = res.problemName
+                window.localStorage.setItem(curCode, res.problemName)
               }
 
-              process(i + 1);
-            });
-          }
-          else {
-            problems[i].problemName = window.localStorage.getItem(cur_code);
-            process(i + 1);
+              process(i + 1)
+            })
+          } else {
+            problems[i].problemName = window.localStorage.getItem(curCode)
+            process(i + 1)
           }
         }
+      } else {
+        window.alert(res)
       }
-      else {
-        alert(res);
-      }
-    });
+    })
   }
 
-  render() {
-    var items = null;
+  render () {
+    var items = null
     if (this.state.problems.length > 0) {
       items = this.state.problems.map(function (i) {
         return (
           <tr key={i.problemCode}>
             <td>
-              <a target="_blank" href={url_problem + '/' + i.contestCode + '/problems/' + i.problemCode}> {i.problemName} </a>
+              <a target='_blank' href={urlProblem + '/' + i.contestCode + '/problems/' + i.problemCode}> {i.problemName} </a>
             </td>
             <td> {i.problemCode} </td>
             <td> {i.successfulSubmissions} </td>
             <td> {parseFloat(i.accuracy).toFixed(2)} </td>
           </tr>
         )
-      });
+      })
     }
 
     var problemsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
       <div>
-        <Table bordered={true}>
+        <Table bordered>
           <thead>
             <tr>
               <th> Name </th>
@@ -111,7 +107,7 @@ class Problems extends Component {
 
     var standingsView = <Standings
       problems={this.state.problems}
-    />;
+    />
 
     return (
       <div>
@@ -119,7 +115,7 @@ class Problems extends Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
+              onClick={() => { this.toggle('1') }}
             >
               Problems
             </NavLink>
@@ -127,21 +123,21 @@ class Problems extends Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
+              onClick={() => { this.toggle('2') }}
             >
               Standings
             </NavLink>
           </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
+          <TabPane tabId='1'>
             <Row>
               <Col>
                 {problemsView}
               </Col>
             </Row>
           </TabPane>
-          <TabPane tabId="2">
+          <TabPane tabId='2'>
             <Row>
               <Col>
                 {standingsView}
@@ -154,4 +150,4 @@ class Problems extends Component {
   }
 }
 
-export default Problems;
+export default Problems
