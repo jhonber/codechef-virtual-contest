@@ -14,8 +14,7 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "start": "export REACT_APP_ENV='prod' && react-scripts start",
-    "start-dev": "export REACT_APP_ENV='dev' && react-scripts start",
+    "start": "export REACT_APP_ENV='dev' && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
