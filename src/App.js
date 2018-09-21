@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Contest from './components/contest'
 import Utils from './components/utils'
 import { Jumbotron, Container, Button } from 'reactstrap'
+import LogoutButton from './components/logoutButton'
 
 var config = require('./config-dev.json')
 const url = config.urlBase
@@ -76,6 +77,7 @@ class App extends Component {
             <p>Run past contests of Codechef in virtual mode</p>
             {user}
             {loginButton}
+            <LogoutButton />
           </Container>
         </Jumbotron>
       </div>
