@@ -3,8 +3,8 @@
   "urlAuthorize": "/oauth/authorize",
   "urlToken": "/oauth/token",
   "urlRedirect": "http://localhost:3000/auth/codechef/callback",
-  "clientID": "76ffa84f57f0276abcbc5d8ecc246691",
-  "clientSecret": "ed3f09a2110901436e901b998494341f",
+  "clientID": "1e0d3b472d830433964cf30e033bc46d",
+  "clientSecret": "f7f700a2f031d4eb4b33ceecf3e5f31c",
   "urlUser": "/users/me",
   "urlMain": "https://www.codechef.com",
   "urlBackend": "http://localhost:3333"
