@@ -6,9 +6,8 @@ import Utils from './utils'
 import Countdown from './countdown'
 import Standings from './standings'
 
-const config = require('../config-dev.json')
-const url = config.urlBase
-const urlProblem = config.urlMain
+const url = Utils.config.urlBase
+const urlProblem = Utils.config.urlMain
 
 class Problems extends Component {
   constructor (props) {
@@ -44,7 +43,7 @@ class Problems extends Component {
             return
           }
           var curCode = problems[i].problemCode
-          var curURL = config.urlBase + '/contests/' +
+          var curURL = url + '/contests/' +
             what.state.contestCode + '/problems/' + curCode
 
           if (!window.localStorage.getItem(curCode) || window.localStorage.getItem(curCode) === '') {

@@ -1,5 +1,5 @@
 var superagent = require('superagent')
-var config = require('../config-dev.json')
+var config = require(`../config-${process.env.REACT_APP_ENV}.json`)
 const url = config.urlBase
 const backendURL = config.urlBackend
 
@@ -135,5 +135,7 @@ module.exports = {
   logout: function () {
     window.localStorage.clear()
     module.exports.moveTo('/')
-  }
+  },
+
+  config: config
 }

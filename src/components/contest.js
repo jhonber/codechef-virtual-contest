@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import Utils from './utils'
 import { Table, Button } from 'reactstrap'
 
-const config = require('../config-dev.json')
-const url = config.urlBase
+const url = Utils.config.urlBase
 
 class Contest extends Component {
   constructor (props) {
@@ -44,7 +43,7 @@ class Contest extends Component {
     var mainView = null
 
     if (this.state.valid_api_token && this.state.contestList) {
-      const urlContest = config.urlMain + '/'
+      const urlContest = Utils.config.urlMain + '/'
       items = this.state.contestList.map(function (i) {
         return (<tr key={i.code}>
           <td>

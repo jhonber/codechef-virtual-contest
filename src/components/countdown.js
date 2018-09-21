@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Utils from './utils'
 var moment = require('moment')
-var config = require('../config-dev.json')
 
 class Countdown extends Component {
   constructor (props) {
@@ -20,7 +19,7 @@ class Countdown extends Component {
 
   componentDidMount () {
     var user = window.localStorage.user
-    var url = config.urlBackend + '/contest/last/' + user
+    var url = Utils.config.urlBackend + '/contest/last/' + user
     var what = this
 
     Utils.getRequest(url, function (err, res) {

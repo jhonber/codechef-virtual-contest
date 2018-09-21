@@ -3,8 +3,7 @@ import Utils from './utils'
 import { Alert, Form, FormGroup, Button, Label, Input, FormText, FormFeedback } from 'reactstrap'
 var moment = require('moment')
 
-var config = require('../config-dev.json')
-var url = config.urlBase
+var url = Utils.config.urlBase
 
 class ContestForm extends Component {
   constructor (props) {
@@ -28,7 +27,7 @@ class ContestForm extends Component {
     var val = this.state.minutesBeforeStart
 
     if (isNumber(val) && val >= 5 && val <= 60) {
-      url = config.urlBackend + '/contest'
+      url = Utils.config.urlBackend + '/contest'
       const startTime = moment(new Date()).add(this.state.minutesBeforeStart, 'm').toDate()
       this.setState({ startTime: startTime })
 

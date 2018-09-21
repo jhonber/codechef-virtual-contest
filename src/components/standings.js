@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Table } from 'reactstrap'
 import Utils from './utils'
 
-var config = require('../config-dev.json')
-const url = config.urlBase
+const url = Utils.config.urlBase
 
 class Standings extends Component {
   constructor (props) {
