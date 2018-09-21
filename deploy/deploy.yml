@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: no
+
+  environment:
+    REACT_APP_ENV: dev
+
+  tasks:
+    - name: Install pm2
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Install http-server
+      npm:
+        name: http-server
+        global: yes
+
+    - name: Clone the repository
+      git:
+        repo: git@github.com:jhonber/codechef-virtual-contest.git
+        dest: /root/deploy
+        accept_hostkey: yes
+        force: yes
+
+    - name: Install project dependencies
+      npm:
+        path: /root/deploy
+
+    - name: Build static site
+      command: npm run build
+      args:
+        chdir: /root/deploy
+
+    - name: Delete old pm2 process
+      command: pm2 delete frontend
+      ignore_errors: yes
+
+    - name: Start frontend using pm2
+      command: pm2 start /usr/local/bin/http-server --name frontend -- build -p 80 -d false

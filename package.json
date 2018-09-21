@@ -1,6 +1,7 @@
 {
   "name": "codechef-virtual-contest",
   "version": "0.1.0",
+  "homepage": "http://149.129.136.228",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.1",
