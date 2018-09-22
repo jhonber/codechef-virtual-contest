@@ -19,22 +19,22 @@
     - name: Clone the repository
       git:
         repo: git@github.com:jhonber/codechef-virtual-contest.git
-        dest: /root/deploy
+        dest: /root/frontend
         accept_hostkey: yes
         force: yes
 
     - name: Install project dependencies
       npm:
-        path: /root/deploy
+        path: /root/frontend
 
     - name: Build static site
       command: npm run build
       args:
-        chdir: /root/deploy
+        chdir: /root/frontend
 
     - name: Delete old pm2 process
       command: pm2 delete frontend
       ignore_errors: yes
 
     - name: Start frontend using pm2
-      command: pm2 start /usr/local/bin/serve --name frontend -- /root/deploy/build -l 80 -c /root/deploy/serve.json
+      command: pm2 start /usr/local/bin/serve --name frontend -- /root/frontend/build -l 80 -c /root/frontend/serve.json
