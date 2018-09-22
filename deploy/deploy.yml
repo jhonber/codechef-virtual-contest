@@ -11,9 +11,9 @@
         name: pm2
         global: yes
 
-    - name: Install http-server
+    - name: Install serve
       npm:
-        name: http-server
+        name: serve
         global: yes
 
     - name: Clone the repository
@@ -37,4 +37,4 @@
       ignore_errors: yes
 
     - name: Start frontend using pm2
-      command: pm2 start /usr/local/bin/http-server --name frontend -- /root/deploy/build -p 80 -d false
+      command: pm2 start /usr/local/bin/serve --name frontend -- /root/deploy/build -l 80 -c /root/deploy/serve.json
