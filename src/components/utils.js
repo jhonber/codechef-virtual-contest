@@ -1,4 +1,5 @@
-var superagent = require('superagent')
+const fetch = require('node-fetch')
+
 var config = require(`../config-${process.env.REACT_APP_ENV}.json`)
 const url = config.urlBase
 const backendURL = config.urlBackend
@@ -14,27 +15,18 @@ module.exports = {
       'redirect_uri': config.urlRedirect
     }
 
-    superagent
-      .post(tokenURL)
-      .send(data)
-      .end(function (err, res) {
-        res = res.body
-        console.log('RES')
-        console.log(res)
-        if (!err && ('status' in res && res.status === 'OK')) {
-          console.log(`${backendURL}/auth/login`)
-          superagent
-            .post(`${backendURL}/auth/login`)
-            .send(res.result.data)
-            .end(function (err, res) {
-              if (err) return cb(err)
-              cb(null, res.body)
-            })
-        } else {
-          console.log('Error: ', res)
-          cb(res.result.errors.message)
-        }
+    fetch(tokenURL, { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })
+      .then(res => res.json())
+      .then(res => {
+        if (res.status !== 'OK') return cb(res.result)
+        const tokens = res.result.data
+        module.exports.postRequest(`${backendURL}/auth/login`, tokens, function (err, data) {
+          console.log(err)
+          if (err) return cb(err)
+          cb(null, data)
+        })
       })
+      .catch(err => console.log('Can not get the token from codechef', err))
   },
 
   refreshToken: function () {
@@ -46,72 +38,59 @@ module.exports = {
       'client_secret': config.clientSecret
     }
 
-    superagent
-      .post(tokenURL)
-      .send(data)
-      .end(function (err, res) {
-        res = res.body
-        if (!err && ('status' in res && res.status === 'OK')) {
+    fetch(tokenURL, { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })
+      .then(res => res.json())
+      .then(res => {
+        if ('status' in res && res.status === 'OK') {
           var data = res.result.data
           window.localStorage.setItem('access_token', data.access_token)
           window.localStorage.setItem('refresh_token', data.refresh_token)
-        } else {
-          console.log('Error: ', err, res)
-          module.exports.logout()
         }
+      })
+      .catch(err => {
+        console.log('Can not refresh token', err)
+        module.exports.logout()
       })
   },
 
-  getSecureRequest: function (url, token, cb) {
-    superagent
-      .get(url)
-      .set('Authorization', 'Bearer ' + token)
-      .end(function (err, res) {
-        if (!err) {
-          var data = res.body
-          console.log('data:', data)
-          if (!err) {
-            if ('status' in data) {
-              if (data.status === 'OK') {
-                if ('content' in data.result.data) { cb(null, data.result.data.content) } else { cb(data.result.data.message) }
-              } else {
-                cb(data.result.errors[0])
-              }
-            }
+  getSecureRequest: function (url, token, next) {
+    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => res.json())
+      .then(res => {
+        if (('status' in res) && (res.status === 'OK')) {
+          if ('content' in res.result.data) {
+            next(null, res.result.data.content)
           } else {
-            cb(err)
+            next(res.result.data.message)
           }
         } else {
-          console.log('err: ', err)
-          cb(err)
+          next(res)
         }
       })
-  },
-
-  getRequest: function (url, cb) {
-    superagent
-      .get(url)
-      .end(function (err, res) {
-        console.log('HERE')
-        console.log(err)
-        console.log(res)
-        if (err) {
-          if (res) cb(res.text)
-          else cb(err)
-        } else cb(null, res.body)
+      .catch(err => {
+        console.log('Can not perform secure request', err)
+        next(err)
       })
   },
 
-  postRequest: function (url, data, cb) {
-    superagent
-      .post(url)
-      .send(data)
-      .end(function (err, res) {
-        if (err) {
-          if (res) cb(res.text)
-          else cb(err)
-        } else cb(null, res)
-      })
+  getRequest: function (url, next) {
+    // TODO: Fix credentials, only share with the backend
+    fetch(url, { credentials: 'include' })
+      .then(res => res.json())
+      .then(res => next(null, res))
+      .catch(err => next(err))
+  },
+
+  postRequest: function (url, data, next) {
+    // TODO: Fix credentials, only share with the backend
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(res => next(null, res))
+      .catch(err => next(err))
   },
 
   checkLocalStorage: function (cb) {
