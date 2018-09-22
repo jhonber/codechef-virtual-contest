@@ -70,6 +70,9 @@ class App extends Component {
       </Button>
     }
 
+    let logoutButton = this.state.logged ? <LogoutButton /> : null
+    let contestSection = this.state.logged ? <Contest /> : null
+
     let home = <div>
       <div style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Jumbotron fluid style={{ textAlign: 'center', padding: 15 }}>
@@ -78,11 +81,11 @@ class App extends Component {
             <p>Run past contests of Codechef in virtual mode</p>
             {user}
             {loginButton}
-            <LogoutButton />
+            {logoutButton}
           </Container>
         </Jumbotron>
       </div>
-      <Contest />
+      {contestSection}
     </div >
 
     var errorPage = <div> <h2> LocalStorage not supported! </h2> </div>
