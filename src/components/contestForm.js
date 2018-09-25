@@ -6,11 +6,32 @@ class ContestForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      contestCode: 'COOK98' // TODO: fill this with the proper value
+      contestCode: '',
+      contestsList: []
     }
 
     this.handleForm = this.handleForm.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getPastContests = this.getPastContests.bind(this)
+  }
+
+  componentDidMount () {
+    this.getPastContests()
+  }
+
+  getPastContests () {
+    var self = this
+    var token = window.localStorage.getItem('access_token')
+    var url = `${Utils.config.urlBase}/contests?status=past&limit=100`
+
+    Utils.getSecureRequest(url, token, function (err, data) {
+      if (!err) {
+        self.setState({ contestsList: data.contestList })
+        console.log(data.contestList)
+      } else {
+        console.log('Error retrieving data: ', err)
+      }
+    })
   }
 
   handleForm () {
@@ -31,14 +52,18 @@ class ContestForm extends Component {
   }
 
   render () {
+    var items = this.state.contestsList.map(function (item) {
+      return (
+        <option key={item.code} value={item.code}>{item.name}</option>
+      )
+    })
+
     var form = <div>
       <h2>Create new virtual contest</h2>
       <Form style={{ textAlign: 'center' }}>
-        <FormGroup> {/* TODO: fill this select with real contests using the API */}
-          <Input type='select' name='contestCode' id='contestCode' onChange={this.handleChange}>
-            <option value='COOK98'>September Mega Cook-Off 2018</option>
-            <option value='CGSC2018'>Code Garage September Challenge</option>
-            <option value='INCC2018'>Code Incognito</option>
+        <FormGroup>
+          <Input type='select' name='selectContest' id='selectContest' onChange={this.handleChange}>
+            {items}
           </Input>
         </FormGroup>
         <Button color='primary' onClick={this.handleForm}>Create new virtual contest</Button>{''}
