@@ -43,7 +43,7 @@ class Contest extends Component {
         </td>
       </tr>
       )
-})
+    })
 
     return (
       <div style={{ textAlign: 'center' }}>
