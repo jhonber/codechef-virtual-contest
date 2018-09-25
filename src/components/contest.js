@@ -41,14 +41,16 @@ class Contest extends Component {
   render () {
     const items = this.state.contestList.map(function (i) {
       const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
-      return (<tr key={i._id}>
-        <td>{i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}</td>
-        <td>{duration.toFixed(1)} hours</td>
-        <td>{i.author.username}</td>
-        <td>
+      return (<tr key={i._id} >
+        <td
+          style={{ padding: 0, verticalAlign: 'middle' }}>
+          {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
+        </td>
+        <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
+        <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>
+        <td style={{ padding: 0, verticalAlign: 'middle' }}>
           <Button
-            color='success'
-            size='sm'
+            color='link'
             onClick={() => { /* TODO: Set url to contest registration */ }} >
             Register
           </Button>{' '}
@@ -83,7 +85,9 @@ class Contest extends Component {
               </tbody>
             </Table>
           </div>
-          {paginator}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {paginator}
+          </div>
         </div>
         : null)
     )
