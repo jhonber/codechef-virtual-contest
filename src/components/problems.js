@@ -31,10 +31,10 @@ class Problems extends Component {
   componentDidMount () {
     const contestUrl = url + '/contests/' + this.state.contestCode
     var token = window.localStorage.access_token
-    var what = this
+    var self = this
     Utils.getSecureRequest(contestUrl, token, function (err, res) {
       if (!err) {
-        what.setState({ contestName: res.name, contestCode: res.code, problems: res.problemsList })
+        self.setState({ contestName: res.name, contestCode: res.code, problems: res.problemsList })
       } else {
         window.alert(res)
       }

@@ -18,27 +18,27 @@ class App extends Component {
   }
 
   componentDidMount () {
-    var what = this
+    var self = this
     Utils.checkLocalStorage(function (err) {
       if (err) {
-        what.setState({ localStorageSupported: false })
+        self.setState({ localStorageSupported: false })
       } else {
         const refreshToken = window.localStorage.getItem('refresh_token')
         if (refreshToken && refreshToken !== '') {
-          what.setState({ logged: true })
-          what.handleInfoUser()
+          self.setState({ logged: true })
+          self.handleInfoUser()
         }
       }
     })
   }
 
   handleInfoUser () {
-    var what = this
+    var self = this
     const userURL = url + Utils.config.urlUser
     var token = window.localStorage.getItem('access_token')
     Utils.getSecureRequest(userURL, token, function (err, data) {
       if (!err) {
-        what.setState({ userInfo: data })
+        self.setState({ userInfo: data })
         window.localStorage.user = data.username
       } else {
         console.log('Error: ', err)

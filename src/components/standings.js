@@ -21,7 +21,7 @@ class Standings extends Component {
     this.setState({ problems: this.props.problems })
 
     var token = window.localStorage.access_token
-    var what = this
+    var self = this
     var verdict = {}
 
     Utils.getSecureRequest(submissionsURL, token, function (err, res) {
@@ -30,7 +30,7 @@ class Standings extends Component {
 
         function process (i) {
           if (i === res.length) {
-            what.setState({ verdict: verdict })
+            self.setState({ verdict: verdict })
           } else {
             var code = res[i].problemCode
 

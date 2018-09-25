@@ -20,7 +20,7 @@ class Countdown extends Component {
   componentDidMount () {
     var user = window.localStorage.user
     var url = Utils.config.urlBackend + '/contest/last/' + user
-    var what = this
+    var self = this
 
     Utils.getRequest(url, function (err, res) {
       if (!err) {
@@ -29,10 +29,10 @@ class Countdown extends Component {
         var startTime = new Date(res.startTime)
         var endTime = moment(startTime).add(parseInt(res.duration, 10), 'm').toDate()
 
-        what.setState({ contestCode: res.code, startTime: startTime, endTime: endTime })
+        self.setState({ contestCode: res.code, startTime: startTime, endTime: endTime })
 
-        what.refresh()
-        setInterval(() => what.refresh(), 1000)
+        self.refresh()
+        setInterval(() => self.refresh(), 1000)
       } else {
         window.alert(res)
       }
