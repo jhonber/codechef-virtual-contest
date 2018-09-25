@@ -1,18 +1,27 @@
 import React, { Component } from 'react'
 import Utils from './utils'
-import { Form, FormGroup, Button, Input } from 'reactstrap'
+import { Form,
+  FormGroup,
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter
+} from 'reactstrap'
 
 class ContestForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
       contestCode: '',
-      contestsList: []
+      contestsList: [],
+      modalVisible: false
     }
 
     this.handleForm = this.handleForm.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.getPastContests = this.getPastContests.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
   }
 
   componentDidMount () {
@@ -40,7 +49,10 @@ class ContestForm extends Component {
           }
         }
 
-        self.setState({ contestsList: filtered })
+        self.setState({
+          contestCode: (filtered.length > 0 ? filtered[0].code : ''),
+          contestsList: filtered
+        })
       } else {
         console.log('Error retrieving data: ', err)
       }
@@ -53,16 +65,23 @@ class ContestForm extends Component {
     }
     const self = this
     Utils.postRequest(`${Utils.config.urlBackend}/contests`, data, function (err, res) {
-      if (err) return console.log('problem creating new contest', err)
-      self.setState({ valid: true, created: true })
-      // TODO: show info after success
-      console.log('Contest created:', res)
+      var msj = 'The contest was successful created.'
+      if (err) {
+        msj = 'Problem creating new contest: ' + err
+        console.log(msj)
+      }
+      self.setState({ modalContent: msj })
+      self.toggleModal()
     })
   }
 
   handleChange (event) {
     console.log('value: ', event.target.value)
     this.setState({ contestCode: event.target.value })
+  }
+
+  toggleModal () {
+    this.setState({ modalVisible: !this.state.modalVisible })
   }
 
   render () {
@@ -88,9 +107,21 @@ class ContestForm extends Component {
       </Form>
     </div>
 
+    var modal = <Modal
+      isOpen={this.state.modalVisible}
+      toggle={this.toggleModal}>
+      <ModalBody>
+        {this.state.modalContent}
+      </ModalBody>
+      <ModalFooter>
+        <Button color='primary' onClick={this.toggleModal}>Ok</Button>{' '}
+      </ModalFooter>
+    </Modal>
+
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
         {form}
+        {modal}
       </div>
     )
   }
