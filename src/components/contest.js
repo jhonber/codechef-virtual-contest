@@ -28,7 +28,7 @@ class Contest extends Component {
 
   render () {
     var items = this.state.contestList.map(function (i) {
-      var duration = parseInt(i.duration) / (1000 * 60 * 60)
+      var duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
       return (<tr key={i._id}>
         <td>{i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}</td>
         <td>{duration.toFixed(1)} hours</td>
