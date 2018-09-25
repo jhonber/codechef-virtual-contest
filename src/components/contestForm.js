@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Utils from './utils'
-import { Form,
+import {
+  Form,
   FormGroup,
   Button,
   Input,

@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import Utils from './utils'
+import {
+  Table,
+  Button
+} from 'reactstrap'
 
 class Contest extends Component {
   constructor (props) {
@@ -23,9 +27,42 @@ class Contest extends Component {
   }
 
   render () {
+    var items = this.state.contestList.map(function (i) {
+      var duration = parseInt(i.duration) / (1000 * 60 * 60)
+      return (<tr key={i._id}>
+        <td>{i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}</td>
+        <td>{duration.toFixed(1)} hours</td>
+        <td>{i.author}</td>
+        <td>
+          <Button
+            color='success'
+            size='sm'
+            onClick={() => { /* TODO: Set url to contest registration */ }} >
+            Register
+          </Button>{' '}
+        </td>
+      </tr>
+      )
+})
+
     return (
-      <div>
-        {JSON.stringify(this.state.contestList)}
+      <div style={{ textAlign: 'center' }}>
+        <h4> List of contests </h4>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Table striped style={{ width: '90%' }}>
+            <thead>
+              <tr>
+                <th>Contest name</th>
+                <th>Duration</th>
+                <th>Author</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {items}
+            </tbody>
+          </Table>
+        </div>
       </div>
     )
   }
