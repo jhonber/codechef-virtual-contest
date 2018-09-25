@@ -5,11 +5,17 @@ import {
   Button
 } from 'reactstrap'
 
+import Pagination from 'rc-pagination'
+import 'rc-pagination/assets/index.css'
+
 class Contest extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      contestList: []
+      contestList: [],
+      numContest: 0,
+      currentPage: 1,
+      pageSize: 10
     }
   }
 
@@ -19,16 +25,23 @@ class Contest extends Component {
 
   getUserContests = () => {
     const self = this
-    Utils.getRequest(`${Utils.config.urlBackend}/contests/`, function (err, data) {
-      if (err) return console.log('can not get the users\'s contest')
+    const offset = this.state.pageSize * (this.state.currentPage - 1)
+    Utils.getRequest(`${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`, function (err, data) {
+      if (err) return console.log('can not get the users\'s contest', err)
       console.log(data)
-      self.setState({ contestList: data.contests })
+      self.setState({ contestList: data.contests, numContests: data.numContests })
     })
   }
 
+  pageChange = (page) => {
+    console.log(page)
+    this.setState({ currentPage: page })
+    this.getUserContests()
+  }
+
   render () {
-    var items = this.state.contestList.map(function (i) {
-      var duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
+    const items = this.state.contestList.map(function (i) {
+      const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
       return (<tr key={i._id}>
         <td>{i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}</td>
         <td>{duration.toFixed(1)} hours</td>
@@ -44,6 +57,8 @@ class Contest extends Component {
       </tr>
       )
     })
+
+    const paginator = <Pagination onChange={this.pageChange} current={this.state.currentPage} total={this.state.numContests} pageSize={this.state.pageSize} />
 
     return (
       (this.state.contestList.length > 0
@@ -64,6 +79,7 @@ class Contest extends Component {
               </tbody>
             </Table>
           </div>
+          {paginator}
         </div>
         : null)
     )
