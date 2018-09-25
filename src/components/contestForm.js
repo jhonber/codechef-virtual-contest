@@ -92,15 +92,20 @@ class ContestForm extends Component {
       )
     })
 
-    var form = <div>
-      <h2>Create new virtual contest</h2>
-      <Form style={{ textAlign: 'center' }}>
-        <FormGroup>
-          <Input type='select' name='selectContest' id='selectContest' onChange={this.handleChange}>
-            {items}
-          </Input>
-        </FormGroup>
-        <Button color='primary' onClick={this.handleForm}>Create new virtual contest</Button>{''}
+    var form = <div style={{ textAlign: 'center' }}>
+      <h3>Create new virtual contest</h3>
+      <Form
+        style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ marginRight: 5 }}>
+          <FormGroup>
+            <Input type='select' name='selectContest' id='selectContest' onChange={this.handleChange}>
+              {items}
+            </Input>
+          </FormGroup>
+        </div>
+        <div>
+          <Button color='primary' onClick={this.handleForm}>Create new virtual contest</Button>{' '}
+        </div>
       </Form>
     </div>
 
@@ -117,8 +122,8 @@ class ContestForm extends Component {
     </Modal>
 
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-        {form}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {this.state.contestsList.length > 0 && form}
         {modal}
       </div>
     )

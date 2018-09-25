@@ -46,24 +46,26 @@ class Contest extends Component {
     })
 
     return (
-      <div style={{ textAlign: 'center' }}>
-        <h4> List of contests </h4>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Table striped style={{ width: '90%' }}>
-            <thead>
-              <tr>
-                <th>Contest name</th>
-                <th>Duration</th>
-                <th>Author</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {items}
-            </tbody>
-          </Table>
+      (this.state.contestList.length > 0
+        ? <div style={{ textAlign: 'center' }}>
+          <h5> List of contests </h5>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Table striped style={{ width: '90%' }}>
+              <thead>
+                <tr>
+                  <th>Contest name</th>
+                  <th>Duration</th>
+                  <th>Author</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {items}
+              </tbody>
+            </Table>
+          </div>
         </div>
-      </div>
+        : null)
     )
   }
 }

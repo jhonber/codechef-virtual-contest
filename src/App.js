@@ -48,16 +48,16 @@ class App extends Component {
   }
 
   render () {
-    var user = (this.state.userInfo
+    var user = this.state.userInfo
       ? <p className='text-success'
         style={{ fontWeight: 'bold', margin: 0 }}>
         Welcome: {this.state.userInfo.username}
       </p>
-      : <p className='text-warning'> Anonymous </p>)
+      : <p className='text-warning'> Anonymous </p>
 
-    let loginButton = null
-    if (!this.state.logged) {
-      loginButton = <Button
+    let loginButton = !this.state.logged
+      ? <Button
+        size='sm'
         color='primary'
         onClick={() => {
           const callbackURL = url + Utils.config.urlAuthorize + '?response_type=code&client_id=' +
@@ -69,7 +69,7 @@ class App extends Component {
       >
         Login
       </Button>
-    }
+      : null
 
     let logoutButton = this.state.logged ? <LogoutButton /> : null
     let contestSection = this.state.logged ? <Contest /> : null
@@ -77,13 +77,12 @@ class App extends Component {
 
     let home = <div>
       <div style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Jumbotron fluid style={{ textAlign: 'center', padding: 15 }}>
+        <Jumbotron fluid style={{ textAlign: 'center', padding: 15, marginBottom: 10 }}>
           <Container fluid>
-            <h2>Codechef Virtual Contest</h2>
-            <span>Run past contests of Codechef in virtual mode</span>
-            {user}
+            <h3>Run past contests of Codechef in virtual mode</h3>
+            {this.state.userInfo && user}
             {loginButton}
-            {logoutButton}
+            {this.state.userInfo && logoutButton}
           </Container>
         </Jumbotron>
       </div>

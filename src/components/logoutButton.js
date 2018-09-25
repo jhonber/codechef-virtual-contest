@@ -21,7 +21,7 @@ class LogoutButton extends Component {
 
   render () {
     return (
-      <Button onClick={this.handleClick}>
+      <Button size='sm' onClick={this.handleClick}>
         Log Out
       </Button>
     )
