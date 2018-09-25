@@ -23,9 +23,11 @@ class Contest extends Component {
     this.getUserContests()
   }
 
-  getUserContests = () => {
+  getUserContests = (page) => {
+    page = page || this.state.currentPage
     const self = this
-    const offset = this.state.pageSize * (this.state.currentPage - 1)
+    const offset = this.state.pageSize * (page - 1)
+    console.log('will query with offset', offset)
     Utils.getRequest(`${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`, function (err, data) {
       if (err) return console.log('can not get the users\'s contest', err)
       console.log(data)
@@ -34,9 +36,8 @@ class Contest extends Component {
   }
 
   pageChange = (page) => {
-    console.log(page)
     this.setState({ currentPage: page })
-    this.getUserContests()
+    this.getUserContests(page)
   }
 
   render () {
