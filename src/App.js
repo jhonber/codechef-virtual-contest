@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   componentDidMount () {
-    var self = this
+    const self = this
     Utils.checkLocalStorage(function (err) {
       if (err) {
         self.setState({ localStorageSupported: false })
@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   handleInfoUser () {
-    var self = this
+    const self = this
     const userURL = url + Utils.config.urlUser
     var token = window.localStorage.getItem('access_token')
     Utils.getSecureRequest(userURL, token, function (err, data) {

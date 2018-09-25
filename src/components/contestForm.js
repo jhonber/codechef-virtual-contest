@@ -29,7 +29,7 @@ class ContestForm extends Component {
   }
 
   getPastContests () {
-    var self = this
+    const self = this
     var token = window.localStorage.getItem('access_token')
     var url = `${Utils.config.urlBase}/contests?status=past&limit=100`
 

@@ -31,7 +31,7 @@ class Problems extends Component {
   componentDidMount () {
     const contestUrl = url + '/contests/' + this.state.contestCode
     var token = window.localStorage.access_token
-    var self = this
+    const self = this
     Utils.getSecureRequest(contestUrl, token, function (err, res) {
       if (!err) {
         self.setState({ contestName: res.name, contestCode: res.code, problems: res.problemsList })

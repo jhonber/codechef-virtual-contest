@@ -20,7 +20,7 @@ class Countdown extends Component {
   componentDidMount () {
     var user = window.localStorage.user
     var url = Utils.config.urlBackend + '/contest/last/' + user
-    var self = this
+    const self = this
 
     Utils.getRequest(url, function (err, res) {
       if (!err) {
