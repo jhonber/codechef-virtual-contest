@@ -58,7 +58,12 @@ class Contest extends Component {
       )
     })
 
-    const paginator = <Pagination onChange={this.pageChange} current={this.state.currentPage} total={this.state.numContests} pageSize={this.state.pageSize} />
+    const paginator = <Pagination
+      onChange={this.pageChange}
+      current={this.state.currentPage}
+      total={this.state.numContests}
+      pageSize={this.state.pageSize}
+    />
 
     return (
       (this.state.contestList.length > 0
