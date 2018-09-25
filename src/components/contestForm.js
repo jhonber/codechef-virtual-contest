@@ -26,8 +26,21 @@ class ContestForm extends Component {
 
     Utils.getSecureRequest(url, token, function (err, data) {
       if (!err) {
-        self.setState({ contestsList: data.contestList })
-        console.log(data.contestList)
+        data = data.contestList
+        var filtered = []
+        var keys = new Set()
+
+        for (var i = 0; i < data.length; ++i) {
+          keys.add(data[i].code)
+        }
+
+        for (var j = 0; j < data.length; ++j) {
+          if (!keys.has(data[j].code + 'A') && !keys.has(data[j].code + 'B')) {
+            filtered.push(data[j])
+          }
+        }
+
+        self.setState({ contestsList: filtered })
       } else {
         console.log('Error retrieving data: ', err)
       }
@@ -48,13 +61,18 @@ class ContestForm extends Component {
   }
 
   handleChange (event) {
+    console.log('value: ', event.target.value)
     this.setState({ contestCode: event.target.value })
   }
 
   render () {
     var items = this.state.contestsList.map(function (item) {
       return (
-        <option key={item.code} value={item.code}>{item.name}</option>
+        <option
+          key={item.code}
+          value={item.code}>
+          {item.name}{item.code[item.code.length - 1] === 'B' ? ' (Div 2)' : ''}
+        </option>
       )
     })
 
