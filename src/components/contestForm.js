@@ -66,6 +66,10 @@ class ContestForm extends Component {
       if (err) {
         msj = 'Problem creating new contest: ' + err
         console.log(msj)
+      } else {
+        if (self.props.handleUpdateContestList) {
+          self.props.handleUpdateContestList()
+        }
       }
       self.setState({ modalContent: msj })
       self.toggleModal()

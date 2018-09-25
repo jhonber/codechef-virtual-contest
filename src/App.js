@@ -15,6 +15,8 @@ class App extends Component {
       localStorageSupported: true,
       userInfo: null
     }
+
+    this.contestRef = React.createRef()
   }
 
   componentDidMount () {
@@ -47,6 +49,10 @@ class App extends Component {
     })
   }
 
+  handleUpdateContestList = (data) => {
+    this.contestRef.current.getUserContests()
+  }
+
   render () {
     var user = this.state.userInfo
       ? <p className='text-success'
@@ -72,8 +78,10 @@ class App extends Component {
       : null
 
     let logoutButton = this.state.logged ? <LogoutButton /> : null
-    let contestSection = this.state.logged ? <Contest /> : null
-    let createContest = this.state.logged ? <ContestForm /> : null
+    let contestSection = this.state.logged ? <Contest ref={this.contestRef} /> : null
+    let createContest = this.state.logged
+      ? <ContestForm handleUpdateContestList={this.handleUpdateContestList} />
+      : null
 
     let home = <div>
       <div style={{ justifyContent: 'center', alignItems: 'center' }}>
