@@ -19,7 +19,7 @@ class Contest extends Component {
 
   getUserContests = () => {
     const self = this
-    Utils.getRequest(`${Utils.config.urlBackend}/users/contests`, function (err, data) {
+    Utils.getRequest(`${Utils.config.urlBackend}/contests/`, function (err, data) {
       if (err) return console.log('can not get the users\'s contest')
       console.log(data)
       self.setState({ contestList: data.contests })
@@ -32,7 +32,7 @@ class Contest extends Component {
       return (<tr key={i._id}>
         <td>{i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}</td>
         <td>{duration.toFixed(1)} hours</td>
-        <td>{i.author}</td>
+        <td>{i.author.username}</td>
         <td>
           <Button
             color='success'
