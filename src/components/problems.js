@@ -34,32 +34,7 @@ class Problems extends Component {
     var what = this
     Utils.getSecureRequest(contestUrl, token, function (err, res) {
       if (!err) {
-        var problems = res.problemsList
-        process(0)
-
-        function process (i) {
-          if (i === problems.length) {
-            what.setState({ contestName: res.name, contestCode: res.code, problems: problems })
-            return
-          }
-          var curCode = problems[i].problemCode
-          var curURL = url + '/contests/' +
-            what.state.contestCode + '/problems/' + curCode
-
-          if (!window.localStorage.getItem(curCode) || window.localStorage.getItem(curCode) === '') {
-            Utils.getSecureRequest(curURL, token, function (err, res) {
-              if (!err) {
-                problems[i].problemName = res.problemName
-                window.localStorage.setItem(curCode, res.problemName)
-              }
-
-              process(i + 1)
-            })
-          } else {
-            problems[i].problemName = window.localStorage.getItem(curCode)
-            process(i + 1)
-          }
-        }
+        what.setState({ contestName: res.name, contestCode: res.code, problems: res.problemsList })
       } else {
         window.alert(res)
       }
