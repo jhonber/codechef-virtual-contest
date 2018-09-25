@@ -16,6 +16,7 @@ class ContestForm extends Component {
     this.state = {
       contestCode: '',
       contestsList: [],
+      modalContent: '',
       modalVisible: false
     }
   }
@@ -61,7 +62,7 @@ class ContestForm extends Component {
     }
     const self = this
     Utils.postRequest(`${Utils.config.urlBackend}/contests`, data, function (err, res) {
-      var msj = 'The contest was successful created.'
+      var msj = 'The contest was successfully created.'
       if (err) {
         msj = 'Problem creating new contest: ' + err
         console.log(msj)
@@ -104,9 +105,10 @@ class ContestForm extends Component {
     </div>
 
     var modal = <Modal
+      size={'sm'}
       isOpen={this.state.modalVisible}
       toggle={this.toggleModal}>
-      <ModalBody>
+      <ModalBody style={{ textAlign: 'center' }}>
         {this.state.modalContent}
       </ModalBody>
       <ModalFooter>
