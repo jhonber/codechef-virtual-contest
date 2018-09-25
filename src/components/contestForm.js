@@ -17,18 +17,13 @@ class ContestForm extends Component {
       contestsList: [],
       modalVisible: false
     }
-
-    this.handleForm = this.handleForm.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.getPastContests = this.getPastContests.bind(this)
-    this.toggleModal = this.toggleModal.bind(this)
   }
 
   componentDidMount () {
     this.getPastContests()
   }
 
-  getPastContests () {
+  getPastContests = () => {
     const self = this
     var token = window.localStorage.getItem('access_token')
     var url = `${Utils.config.urlBase}/contests?status=past&limit=100`
@@ -59,7 +54,7 @@ class ContestForm extends Component {
     })
   }
 
-  handleForm () {
+  handleForm = () => {
     const data = {
       contestCode: this.state.contestCode
     }
@@ -75,12 +70,12 @@ class ContestForm extends Component {
     })
   }
 
-  handleChange (event) {
+  handleChange = (event) => {
     console.log('value: ', event.target.value)
     this.setState({ contestCode: event.target.value })
   }
 
-  toggleModal () {
+  toggleModal = () => {
     this.setState({ modalVisible: !this.state.modalVisible })
   }
 

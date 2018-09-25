@@ -20,7 +20,7 @@ class Problems extends Component {
     }
   }
 
-  toggle (tab) {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab

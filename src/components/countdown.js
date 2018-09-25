@@ -13,8 +13,6 @@ class Countdown extends Component {
       minutes: '00',
       seconds: '00'
     }
-
-    this.refresh = this.refresh.bind(this)
   }
 
   componentDidMount () {
@@ -39,7 +37,7 @@ class Countdown extends Component {
     })
   }
 
-  refresh () {
+  refresh = () => {
     var curTime = new Date()
     var timeA = curTime
     var timeB = curTime
