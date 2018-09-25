@@ -3,6 +3,7 @@ import Contest from './components/contest'
 import Utils from './components/utils'
 import { Jumbotron, Container, Button } from 'reactstrap'
 import LogoutButton from './components/logoutButton'
+import ContestForm from './components/contestForm'
 
 const url = Utils.config.urlBase
 
@@ -72,19 +73,21 @@ class App extends Component {
 
     let logoutButton = this.state.logged ? <LogoutButton /> : null
     let contestSection = this.state.logged ? <Contest /> : null
+    let createContest = this.state.logged ? <ContestForm /> : null
 
     let home = <div>
       <div style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Jumbotron fluid style={{ textAlign: 'center', padding: 15 }}>
           <Container fluid>
-            <h1>Codechef Virtual Contest</h1>
-            <p>Run past contests of Codechef in virtual mode</p>
+            <h2>Codechef Virtual Contest</h2>
+            <span>Run past contests of Codechef in virtual mode</span>
             {user}
             {loginButton}
             {logoutButton}
           </Container>
         </Jumbotron>
       </div>
+      {createContest}
       {contestSection}
     </div >
 

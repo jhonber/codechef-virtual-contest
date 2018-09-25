@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
 import Utils from './utils'
-import { Alert, Form, FormGroup, Button, Label, Input, FormText, FormFeedback } from 'reactstrap'
-var moment = require('moment')
-
-var url = Utils.config.urlBase
+import { Form, FormGroup, Button, Input } from 'reactstrap'
 
 class ContestForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      startTime: null,
-      minutesBeforeStart: 5,
-      created: false,
-      valid: true
+      contestCode: 'COOK98' // TODO: fill this with the proper value
     }
 
     this.handleForm = this.handleForm.bind(this)
@@ -20,80 +14,42 @@ class ContestForm extends Component {
   }
 
   handleForm () {
-    function isNumber (n) {
-      return !isNaN(parseFloat(n)) && isFinite(n)
+    const data = {
+      contestCode: this.state.contestCode
     }
-
-    var val = this.state.minutesBeforeStart
-
-    if (isNumber(val) && val >= 5 && val <= 60) {
-      url = Utils.config.urlBackend + '/contest'
-      const startTime = moment(new Date()).add(this.state.minutesBeforeStart, 'm').toDate()
-      this.setState({ startTime: startTime })
-
-      var data = {
-        name: this.props.contestName,
-        code: this.props.contestCode,
-        duration: 5,
-        startTime: startTime,
-        user: window.localStorage.user
-      }
-
-      console.log('url: ', url)
-      console.log('data: ', data)
-
-      var what = this
-      Utils.postRequest(url, data, function (err, res) {
-        if (!err) {
-          what.setState({ valid: true, created: true })
-          // TODO: show info after successful created
-          console.log('res: ', res)
-        } else {
-          window.alert(res)
-        }
-      })
-    } else {
-      this.setState({ valid: false })
-    }
+    const self = this
+    Utils.postRequest(`${Utils.config.urlBackend}/contests`, data, function (err, res) {
+      if (err) return console.log('problem creating new contest', err)
+      self.setState({ valid: true, created: true })
+      // TODO: show info after success
+      console.log('Contest created:', res)
+    })
   }
 
   handleChange (event) {
-    console.log('val: ', event.target.value)
-    this.setState({ minutesBeforeStart: event.target.value })
+    this.setState({ contestCode: event.target.value })
   }
 
   render () {
     var form = <div>
-      <Alert color='success'>
-        <h1 className='alert-heading'>{this.props.contestName} </h1>
-        <p>
-          ** Registration for virtual participation
-        </p>
-      </Alert>
-
+      <h2>Create new virtual contest</h2>
       <Form style={{ textAlign: 'center' }}>
-        <FormGroup className='mb-2 mr-sm-2 mb-sm-0'>
-          <Label for='minutes' className='mr-sm-2'>Minutes before contest start</Label>
-
-          <Input invalid={!this.state.valid} type='number' name='minutes' id='minutes' value={this.state.minutesBeforeStart}
-            onChange={(event) => { this.handleChange(event) }}
-          />
-          <FormFeedback> Invalid value, enter a valid number. Example: 10</FormFeedback>
-          <FormText>(Minimum 5 / Maximun 60 Minutes)</FormText>
+        <FormGroup> {/* TODO: fill this select with real contests using the API */}
+          <Input type='select' name='contestCode' id='contestCode' onChange={this.handleChange}>
+            <option value='COOK98'>September Mega Cook-Off 2018</option>
+            <option value='CGSC2018'>Code Garage September Challenge</option>
+            <option value='INCC2018'>Code Incognito</option>
+          </Input>
         </FormGroup>
-        <Button color='danger' onClick={this.handleForm}>Register for virtual contest</Button>{''}
+        <Button color='primary' onClick={this.handleForm}>Create new virtual contest</Button>{''}
       </Form>
     </div>
 
-    if (!this.state.created) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-          {form}
-        </div>
-      )
-    } else {
-      Utils.moveTo('/countdown')
-    }
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+        {form}
+      </div>
+    )
   }
 }
 
