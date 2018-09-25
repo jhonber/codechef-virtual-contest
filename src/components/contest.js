@@ -27,10 +27,8 @@ class Contest extends Component {
     page = page || this.state.currentPage
     const self = this
     const offset = this.state.pageSize * (page - 1)
-    console.log('will query with offset', offset)
     Utils.getRequest(`${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`, function (err, data) {
       if (err) return console.log('can not get the users\'s contest', err)
-      console.log(data)
       self.setState({ contestList: data.contests, numContests: data.numContests })
     })
   }
