@@ -10,6 +10,7 @@ class Standings extends Component {
     this.state = {
       contestName: '',
       registrants: [],
+      problems: [],
       contestCode: props.contestCode
     }
   }
@@ -17,7 +18,7 @@ class Standings extends Component {
   componentDidMount () {
     Utils.getRequest(`${Utils.config.urlBackend}/contests/${this.state.contestCode}`, (err, contest) => {
       if (err) return window.alert(err)
-      this.setState({ contestName: contest.name, registrants: contest.registrants })
+      this.setState({ contestName: contest.name, registrants: contest.registrants, problems: contest.problemsList })
     })
   }
 
@@ -30,6 +31,11 @@ class Standings extends Component {
         </tr>
       )
     })
+
+    const problemHeader = this.state.problems.map((p, idx) => {
+      return (<th key={idx}> {p} </th>)
+    })
+
     return (
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
         <div>
@@ -38,6 +44,7 @@ class Standings extends Component {
               <tr>
                 <th> # Rank </th>
                 <th> User Name </th>
+                {problemHeader}
               </tr>
             </thead>
             <tbody style={{ textAlign: 'center' }}>
