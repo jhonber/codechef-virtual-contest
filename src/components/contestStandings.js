@@ -17,7 +17,6 @@ class Standings extends Component {
   componentDidMount () {
     Utils.getRequest(`${Utils.config.urlBackend}/contests/${this.state.contestCode}`, (err, contest) => {
       if (err) return window.alert(err)
-      console.log(contest)
       this.setState({ contestName: contest.name, registrants: contest.registrants })
     })
   }
@@ -25,9 +24,9 @@ class Standings extends Component {
   render () {
     const people = this.state.registrants.map((p, idx) => {
       return (
-        <tr key={idx}>
+        <tr key={p.userID._id}>
           <th> {idx} </th>
-          <th> {p} </th>
+          <th> {p.userID.username} </th>
         </tr>
       )
     })
