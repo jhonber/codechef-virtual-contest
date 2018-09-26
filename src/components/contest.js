@@ -28,10 +28,16 @@ class Contest extends Component {
     page = page || this.state.currentPage
     const self = this
     const offset = this.state.pageSize * (page - 1)
-    Utils.getRequest(`${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`, function (err, data) {
-      if (err) return console.log('can not get the users\'s contest', err)
-      self.setState({ contestList: data.contests, numContests: data.numContests, registeredContests: data.registeredContests })
-    })
+    Utils.getRequest(
+      `${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`,
+      function (err, data) {
+        if (err) return console.log('can not get the users\'s contest', err)
+        self.setState({
+          contestList: data.contests,
+          numContests: data.numContests,
+          registeredContests: data.registeredContests
+        })
+      })
   }
 
   pageChange = (page) => {
@@ -58,7 +64,7 @@ class Contest extends Component {
 
   render () {
     const self = this
-    const toRegister = this.state.contestList.filter(cc => !self.state.registeredContests.includes(cc._id)).map(function (i) {
+    const contestsTable = this.state.contestList.map(function (i) {
       const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
       return (<tr key={i._id} >
         <td
@@ -68,25 +74,24 @@ class Contest extends Component {
         <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
         <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>
         <td style={{ padding: 0, verticalAlign: 'middle' }}>
-          <Button
-            color='link'
-            onClick={() => { self.registerInContest(i._id) }} >
-            Register
-          </Button>{' '}
+          {(function (registered) {
+            if (registered) {
+              return (
+                <Button color='link' disabled>
+                  Registered
+                </Button>
+              )
+            } else {
+              return (
+                <Button
+                  color='link'
+                  onClick={() => { self.registerInContest(i._id) }} >
+                  Register
+                </Button>
+              )
+            }
+          }(!self.state.registeredContests.includes(i._id)))}
         </td>
-      </tr>
-      )
-    })
-    const registered = this.state.contestList.filter(cc => self.state.registeredContests.includes(cc._id)).map(function (i) {
-      const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
-      return (<tr key={i._id} >
-        <td
-          style={{ padding: 0, verticalAlign: 'middle' }}>
-          {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
-        </td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}> Registered</td>
       </tr>
       )
     })
@@ -113,8 +118,7 @@ class Contest extends Component {
                 </tr>
               </thead>
               <tbody>
-                {toRegister}
-                {registered}
+                {contestsTable}
               </tbody>
             </Table>
           </div>
