@@ -90,7 +90,7 @@ class Contest extends Component {
                 </Button>
               )
             }
-          }(!self.state.registeredContests.includes(i._id)))}
+          }(self.state.registeredContests.includes(i._id)))}
         </td>
       </tr>
       )
