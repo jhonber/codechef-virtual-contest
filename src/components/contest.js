@@ -69,7 +69,9 @@ class Contest extends Component {
       return (<tr key={i._id} >
         <td
           style={{ padding: 0, verticalAlign: 'middle' }}>
-          {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
+          <Button color='link' onClick={() => { Utils.moveTo(`/contests/${i._id}`) }}>
+            {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
+          </Button>
         </td>
         <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
         <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>

@@ -4,7 +4,7 @@ import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import Page from 'page'
-import ContestForm from './components/contestForm'
+import ContestStandings from './components/contestStandings'
 import Utils from './components/utils'
 import Problems from './components/problems'
 import Countdown from './components/countdown'
@@ -15,10 +15,10 @@ function startHomeView () {
   ReactDOM.render(<App />, document.getElementById('root'))
 }
 
-function startVirtualContestForm (context) {
+function startContestStandings (context) {
   var params = context.params
   ReactDOM.render(
-    <ContestForm contestName={params.name} contestCode={params.code} />,
+    <ContestStandings contestCode={params.code} />,
     document.getElementById('root')
   )
 }
@@ -54,7 +54,7 @@ function startOAuth2 (context) {
 
 Page('/', startHomeView)
 Page('/auth/codechef/callback', startOAuth2)
-Page('/contest/:code/:name', startVirtualContestForm)
+Page('/contests/:code', startContestStandings)
 Page('/problems/:code', startProblemsView)
 Page('/countdown', startCountdownView)
 Page.start()
