@@ -50,7 +50,7 @@ class Header extends Component {
     let user = this.state.userInfo
       ? <p className='text-success'
         style={{ fontWeight: 'bold', margin: 0 }}>
-        {window.localStorage.username}
+        {this.state.userInfo.username}
       </p>
       : <p className='text-warning'> Anonymous </p>
 
