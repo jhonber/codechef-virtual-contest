@@ -34,7 +34,7 @@ class Standings extends Component {
         problems: new Array(this.state.problems.length)
       })
 
-      for (let j = 0; j < this.state.problems.length; j++) result[i].problems[j] = [-1, 0]
+      for (let j = 0; j < this.state.problems.length; j++) result[i].problems[j] = [null, null]
 
       const start = new Date(registrants[i].startDate).getTime()
       const end = start + this.state.contestDuration
@@ -44,23 +44,19 @@ class Standings extends Component {
         const sDate = new Date(s.date).getTime() - 10 * 60 * 60 * 1000 + 30 * 60 * 1000
         if (start <= sDate && sDate <= end && this.state.problems.includes(s.problemCode)) {
           const ID = codeToID[s.problemCode]
-          console.log('problem id', ID)
-          if (result[i].problems[ID][0] !== -1) continue // already solved
+          if (result[i].problems[ID][0]) continue // already solved
+
+          if (result[i].problems[ID][1]) result[i].problems[ID][1]++
+          else result[i].problems[ID][1] = 1
+
           if (s.result === 'AC') {
-            console.log('ARRAY', result[i].problems)
             result[i].solved++
             result[i].problems[ID][0] = Math.round((sDate - start) / 1000 / 60) // minutes
-            result[i].penalty += result[i].problems[ID][0] + result[i].problems[ID][1] * 20
-            console.log('modificando results en', i, 'en el problema', ID)
-            console.log('ARRAY', result[i].problems)
-          } else {
-            result[i].problems[ID][1]++
+            result[i].penalty += result[i].problems[ID][0] + (result[i].problems[ID][1] - 1) * 20
           }
         }
       }
     }
-
-    console.log('resiult before sort', result)
 
     result.sort(function (a, b) {
       if (a.solved === b.solved) return a.penalty - b.penalty
@@ -91,7 +87,6 @@ class Standings extends Component {
       }
       async.parallel(usersSub, (err, subs) => {
         if (err) return window.alert(err)
-        console.log(subs)
         this.setState({ board: this.createBoard(contest.registrants, subs) })
       })
     })
@@ -99,7 +94,6 @@ class Standings extends Component {
 
   render () {
     const board = []
-    console.log(this.state.board)
     for (let i = 0; i < this.state.board.length; i++) {
       let row = []
       const p = this.state.board[i]
