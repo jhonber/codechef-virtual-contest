@@ -4,6 +4,7 @@
   "homepage": "http://149.129.136.228",
   "private": true,
   "dependencies": {
+    "async": "^2.6.1",
     "bootstrap": "^4.1.1",
     "moment": "^2.22.2",
     "node-fetch": "^2.2.0",
