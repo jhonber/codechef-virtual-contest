@@ -41,7 +41,7 @@ class Standings extends Component {
       for (let j = submissions[i].length - 1; j >= 0; j--) {
         const s = submissions[i][j]
         // TODO: this is hack to solve a bug from codechef, they return the date without TZ (-10h 3min).
-        const sDate = new Date(s.date).getTime() - 10 * 60 * 60 * 1000 + 30 * 60 * 1000
+        const sDate = new Date(s.date).getTime() - 11 * 60 * 60 * 1000 + 30 * 60 * 1000
         if (start <= sDate && sDate <= end && this.state.problems.includes(s.problemCode)) {
           const ID = codeToID[s.problemCode]
           if (result[i].problems[ID][0]) continue // already solved
