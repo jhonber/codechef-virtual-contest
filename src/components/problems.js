@@ -4,7 +4,6 @@ import classnames from 'classnames'
 
 import Utils from './utils'
 import Countdown from './countdown'
-import Standings from './standings'
 
 const url = Utils.config.urlBase
 const urlProblem = Utils.config.urlMain
@@ -79,9 +78,7 @@ class Problems extends Component {
       </div>
     </div>
 
-    var standingsView = <Standings
-      problems={this.state.problems}
-    />
+    var standingsView = 'standings'
 
     return (
       <div>
