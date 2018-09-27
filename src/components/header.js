@@ -39,6 +39,7 @@ class Header extends Component {
       ? <NavLink
         href='#'
         onClick={() => {
+          Utils.clearSession()
           const callbackURL = url + Utils.config.urlAuthorize + '?response_type=code&client_id=' +
             Utils.config.clientID + '&state=xyz&redirect_uri=' + Utils.config.urlRedirect
           Utils.moveTo(callbackURL)

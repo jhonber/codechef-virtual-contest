@@ -5,6 +5,8 @@ const url = config.urlBase
 const backendURL = config.urlBackend
 
 module.exports = {
+  config: config,
+
   getTokenFirstTime: function (code, cb) {
     const tokenURL = url + config.urlToken
     const data = {
@@ -112,7 +114,7 @@ module.exports = {
   },
 
   logout: function () {
-    window.localStorage.clear()
+    module.exports.clearSession()
     module.exports.moveTo('/')
   },
 
@@ -122,5 +124,15 @@ module.exports = {
     return false
   },
 
-  config: config
+  clearCookies () {
+    document.cookie.split(';').forEach(function (c) {
+      document.cookie = c.replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
+    })
+  },
+
+  clearSession () {
+    module.exports.clearCookies()
+    window.localStorage.clear()
+  }
 }
