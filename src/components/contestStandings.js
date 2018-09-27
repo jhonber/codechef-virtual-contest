@@ -31,10 +31,11 @@ class Standings extends Component {
         username: username,
         solved: 0,
         penalty: 0,
-        problems: Array(this.state.problems.length).fill([-1, 0])
+        problems: new Array(this.state.problems.length)
       })
 
-      console.log('ARRAY original', result[i].problems)
+      for (let j = 0; j < this.state.problems.length; j++) result[i].problems[j] = [-1, 0]
+
       const start = new Date(registrants[i].startDate).getTime()
       const end = start + this.state.contestDuration
       for (let j = 0; j < submissions[i].length; j++) {
