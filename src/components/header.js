@@ -30,7 +30,6 @@ class Header extends Component {
         window.localStorage.username = data.username
       } else {
         console.log('Error: ', err)
-        Utils.logout()
       }
     })
   }
@@ -48,7 +47,7 @@ class Header extends Component {
       </NavLink>
       : <LogoutButton />
 
-    let user = window.localStorage.username
+    let user = this.state.userInfo
       ? <p className='text-success'
         style={{ fontWeight: 'bold', margin: 0 }}>
         {window.localStorage.username}
