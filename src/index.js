@@ -14,16 +14,20 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 function startHomeView () {
   ReactDOM.render(<Header />, document.getElementById('header'))
-  ReactDOM.render(<App />, document.getElementById('root'))
+  if (Utils.isLogged()) {
+    ReactDOM.render(<App />, document.getElementById('root'))
+  }
 }
 
 function startContestStandings (context) {
   ReactDOM.render(<Header />, document.getElementById('header'))
-  var params = context.params
-  ReactDOM.render(
-    <ContestStandings contestCode={params.code} />,
-    document.getElementById('root')
-  )
+  if (Utils.isLogged()) {
+    var params = context.params
+    ReactDOM.render(
+      <ContestStandings contestCode={params.code} />,
+      document.getElementById('root')
+    )
+  }
 }
 
 function startProblemsView (context) {
