@@ -7,7 +7,6 @@ import Page from 'page'
 import ContestStandings from './components/contestStandings'
 import Utils from './components/utils'
 import Problems from './components/problems'
-import Countdown from './components/countdown'
 import Header from './components/header'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -36,13 +35,6 @@ function startProblemsView (context) {
   )
 }
 
-function startCountdownView () {
-  ReactDOM.render(
-    <Countdown redirect />,
-    document.getElementById('root')
-  )
-}
-
 function startOAuth2 (context) {
   var code = context.querystring.split('&')[0].split('=')[1]
 
@@ -66,7 +58,6 @@ Page('/', startHomeView)
 Page('/auth/codechef/callback', startOAuth2)
 Page('/contests/:code', checkLogin, startContestStandings)
 Page('/problems/:code', startProblemsView)
-Page('/countdown', startCountdownView)
 Page.start()
 
 registerServiceWorker()
