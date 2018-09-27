@@ -113,7 +113,7 @@ class Standings extends Component {
     }
 
     const problemHeader = this.state.problems.map((p, idx) => {
-      return (<th key={idx}> {p} </th>)
+      return (<th key={idx}> <a href={`${Utils.config.urlMain}/submit/${p}`} target='_bank'>{p}</a> </th>)
     })
 
     return (
