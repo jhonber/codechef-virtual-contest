@@ -21,13 +21,11 @@ function startHomeView () {
 
 function startContestStandings (context) {
   ReactDOM.render(<Header />, document.getElementById('header'))
-  if (Utils.isLogged()) {
-    var params = context.params
-    ReactDOM.render(
-      <ContestStandings contestCode={params.code} />,
-      document.getElementById('root')
-    )
-  }
+  var params = context.params
+  ReactDOM.render(
+    <ContestStandings contestCode={params.code} />,
+    document.getElementById('root')
+  )
 }
 
 function startProblemsView (context) {
