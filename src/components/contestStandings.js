@@ -3,6 +3,7 @@ import { Table } from 'reactstrap'
 import async from 'async'
 
 import Utils from './utils'
+import Countdown from './countdown'
 
 class Standings extends Component {
   constructor (props) {
@@ -14,7 +15,9 @@ class Standings extends Component {
       problems: [],
       board: [[]],
       contestCode: props.contestCode,
-      contestDuration: 0
+      contestDuration: 0,
+      startDate: null,
+      endDate: null
     }
   }
 
@@ -38,6 +41,11 @@ class Standings extends Component {
 
       const start = new Date(registrants[i].startDate).getTime()
       const end = start + this.state.contestDuration
+
+      if (window.localStorage.username === username) {
+        this.setState({ startDate: start, endDate: end })
+      }
+
       for (let j = submissions[i].length - 1; j >= 0; j--) {
         const s = submissions[i][j]
         // TODO: this is hack to solve a bug from codechef, they return the date without TZ (-10h 3min).
@@ -116,6 +124,22 @@ class Standings extends Component {
       return (<th key={idx}> <a href={`${Utils.config.urlMain}/submit/${p}`} target='_bank'>{p}</a> </th>)
     })
 
+    var countdownStyle = {
+      textAlign: 'center',
+      justifyContent: 'center',
+      fontSize: 20,
+      marginLeft: 20
+    }
+
+    var countdownView = this.state.startDate
+      ? <Countdown
+        style={countdownStyle}
+        contestName={this.state.contestName}
+        startDate={this.state.startDate}
+        endDate={this.state.endDate}
+      />
+      : null
+
     return (
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
         <div>
@@ -133,6 +157,9 @@ class Standings extends Component {
               {board}
             </tbody>
           </Table>
+        </div>
+        <div>
+          {countdownView}
         </div>
         <br />
       </div >
