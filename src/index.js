@@ -8,14 +8,17 @@ import ContestStandings from './components/contestStandings'
 import Utils from './components/utils'
 import Problems from './components/problems'
 import Countdown from './components/countdown'
+import Header from './components/header'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
 function startHomeView () {
+  ReactDOM.render(<Header />, document.getElementById('header'))
   ReactDOM.render(<App />, document.getElementById('root'))
 }
 
 function startContestStandings (context) {
+  ReactDOM.render(<Header />, document.getElementById('header'))
   var params = context.params
   ReactDOM.render(
     <ContestStandings contestCode={params.code} />,
