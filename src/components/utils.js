@@ -116,5 +116,11 @@ module.exports = {
     module.exports.moveTo('/')
   },
 
+  isLogged: function () {
+    const token = window.localStorage.getItem('access_token')
+    if (token && token !== '') return true
+    return false
+  },
+
   config: config
 }
