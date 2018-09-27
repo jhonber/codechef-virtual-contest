@@ -59,9 +59,14 @@ function startOAuth2 (context) {
   })
 }
 
+function checkLogin (cxt, next) {
+  if (Utils.isLogged()) next()
+  else Utils.moveTo('/')
+}
+
 Page('/', startHomeView)
 Page('/auth/codechef/callback', startOAuth2)
-Page('/contests/:code', startContestStandings)
+Page('/contests/:code', checkLogin, startContestStandings)
 Page('/problems/:code', startProblemsView)
 Page('/countdown', startCountdownView)
 Page.start()
