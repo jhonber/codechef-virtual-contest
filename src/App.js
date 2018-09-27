@@ -28,13 +28,8 @@ class App extends Component {
   }
 
   render () {
-    let contestSection = null
-    let createContest = null
-    const self = this
-    if (Utils.isLogged()) {
-      contestSection = <Contest ref={self.contestRef} />
-      createContest = <ContestForm handleUpdateContestList={self.handleUpdateContestList} />
-    }
+    let contestSection = <Contest ref={this.contestRef} />
+    let createContest = <ContestForm handleUpdateContestList={this.handleUpdateContestList} />
 
     let home = <div>
       {createContest}
