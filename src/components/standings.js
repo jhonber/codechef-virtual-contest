@@ -15,7 +15,7 @@ class Standings extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const submissionsURL = url + '/submissions/?username=' + window.localStorage.user +
+    const submissionsURL = url + '/submissions/?username=' + window.localStorage.username +
       '&contestCode=PRACTICE&fields=id%2Cdate%2CproblemCode%2Cresult'
 
     this.setState({ problems: this.props.problems })
@@ -111,7 +111,7 @@ class Standings extends Component {
             <tbody style={{ textAlign: 'center' }}>
               <tr>
                 <td> {this.state.rank} </td>
-                <td> {window.localStorage.user} </td>
+                <td> {window.localStorage.username} </td>
                 {result}
               </tr>
             </tbody>
