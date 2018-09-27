@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Utils from './utils'
-import { Button } from 'reactstrap'
+import { NavLink } from 'reactstrap'
 
 const config = require('../config-dev.json')
 
@@ -21,9 +21,9 @@ class LogoutButton extends Component {
 
   render () {
     return (
-      <Button size='sm' onClick={this.handleClick}>
+      <NavLink href='#' onClick={this.handleClick}>
         Log Out
-      </Button>
+      </NavLink>
     )
   }
 }
