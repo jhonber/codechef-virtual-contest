@@ -57,7 +57,7 @@ class Contest extends Component {
         if (res.error) return console.log('can not register in contest:', res.error)
         console.log('successfully registered on contest', res)
         self.state.registeredContests.push(contestID)
-        window.location.reload()
+        self.getUserContests()
       }
     )
   }
