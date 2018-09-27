@@ -38,7 +38,7 @@ class Standings extends Component {
 
       const start = new Date(registrants[i].startDate).getTime()
       const end = start + this.state.contestDuration
-      for (let j = 0; j < submissions[i].length; j++) {
+      for (let j = submissions[i].length - 1; j >= 0; j--) {
         const s = submissions[i][j]
         // TODO: this is hack to solve a bug from codechef, they return the date without TZ (-10h 3min).
         const sDate = new Date(s.date).getTime() - 10 * 60 * 60 * 1000 + 30 * 60 * 1000
