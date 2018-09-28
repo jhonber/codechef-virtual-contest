@@ -10,13 +10,19 @@ class Countdown extends Component {
       endDate: this.props.endDate,
       hours: '00',
       minutes: '00',
-      seconds: '00'
+      seconds: '00',
+      timingId: null
     }
   }
 
   componentDidMount () {
     this.refresh()
-    setInterval(() => this.refresh(), 1000)
+    var timingId = setInterval(() => this.refresh(), 1000)
+    this.setState({ timingId: timingId })
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.timingId)
   }
 
   refresh = () => {
