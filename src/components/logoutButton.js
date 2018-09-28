@@ -22,7 +22,7 @@ class LogoutButton extends Component {
   render () {
     return (
       <NavLink href='#' onClick={this.handleClick}>
-        Log Out
+        <u>Log Out</u>
       </NavLink>
     )
   }

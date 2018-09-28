@@ -141,7 +141,7 @@ class Standings extends Component {
       : null
 
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
         <div>
           <Table striped>
             <thead style={{ textAlign: 'center' }}>

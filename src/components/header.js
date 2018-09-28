@@ -56,8 +56,8 @@ class Header extends Component {
       : <p className='text-warning'> Anonymous </p>
 
     var header = <Nav>
-      <NavLink href='/'>Home</NavLink>
-      <NavLink href='#'>About</NavLink>
+      <NavLink href='/'><u>Home</u></NavLink>
+      <NavLink href='#'><u>About</u></NavLink>
       <NavLink href='#'>{user}</NavLink>
       {loginView}
     </Nav>
