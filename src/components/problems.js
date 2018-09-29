@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap'
-import classnames from 'classnames'
+import { Table } from 'reactstrap'
 
 import Utils from './utils'
-import Countdown from './countdown'
 
 const url = Utils.config.urlBase
 const urlProblem = Utils.config.urlMain
@@ -14,16 +12,7 @@ class Problems extends Component {
     this.state = {
       contestCode: this.props.contestCode,
       contestName: '',
-      problems: [],
-      activeTab: '1'
-    }
-  }
-
-  toggle = (tab) => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
+      problems: []
     }
   }
 
@@ -47,7 +36,11 @@ class Problems extends Component {
         return (
           <tr key={i.problemCode}>
             <td>
-              <a target='_blank' href={urlProblem + '/' + i.contestCode + '/problems/' + i.problemCode}> {i.problemName} </a>
+              <a
+                target='_blank'
+                href={urlProblem + '/' + i.contestCode + '/problems/' + i.problemCode}>
+                {i.problemCode}
+              </a>
             </td>
             <td> {i.problemCode} </td>
             <td> {i.successfulSubmissions} </td>
@@ -57,7 +50,7 @@ class Problems extends Component {
       })
     }
 
-    var problemsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+    var problemsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
       <div>
         <Table bordered>
           <thead>
@@ -73,49 +66,11 @@ class Problems extends Component {
           </tbody>
         </Table>
       </div>
-      <div style={{ marginLeft: 20 }}>
-        <Countdown style={{ justifyContent: 'center', textAlign: 'center' }} />
-      </div>
     </div>
-
-    var standingsView = 'standings'
 
     return (
       <div>
-        <Nav tabs style={{ justifyContent: 'center', textAlign: 'center' }}>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1') }}
-            >
-              Problems
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2') }}
-            >
-              Standings
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId='1'>
-            <Row>
-              <Col>
-                {problemsView}
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId='2'>
-            <Row>
-              <Col>
-                {standingsView}
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
+        {problemsView}
       </div>
     )
   }
