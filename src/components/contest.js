@@ -64,39 +64,42 @@ class Contest extends Component {
 
   render () {
     const self = this
-    const contestsTable = this.state.contestList.map(function (i) {
-      const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
-      return (<tr key={i._id} >
-        <td
-          style={{ padding: 0, verticalAlign: 'middle' }}>
-          <Button color='link' onClick={() => { Utils.moveTo(`/contests/${i._id}`) }}>
-            {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
-          </Button>
-        </td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>
-        <td style={{ padding: 0, verticalAlign: 'middle' }}>
-          {(function (registered) {
-            if (registered) {
-              return (
-                <Button color='link' disabled>
-                  Registered
-                </Button>
-              )
-            } else {
-              return (
-                <Button
-                  color='link'
-                  onClick={() => { self.registerInContest(i._id) }} >
-                  Register
-                </Button>
-              )
-            }
-          }(self.state.registeredContests.includes(i._id)))}
-        </td>
-      </tr>
-      )
-    })
+    var contestsTable = null
+    if (this.state.contestList && this.state.contestList.length > 0) {
+      contestsTable = this.state.contestList.map(function (i) {
+        const duration = parseInt(i.duration, 10) / (1000 * 60 * 60)
+        return (<tr key={i._id} >
+          <td
+            style={{ padding: 0, verticalAlign: 'middle' }}>
+            <Button color='link' onClick={() => { Utils.moveTo(`/contests/${i._id}`) }}>
+              {i.name}{(i.code.substr(i.code.length - 1) === 'B' ? ' (Div 2)' : '')}
+            </Button>
+          </td>
+          <td style={{ padding: 0, verticalAlign: 'middle' }}>{duration.toFixed(1)} hours</td>
+          <td style={{ padding: 0, verticalAlign: 'middle' }}>{i.author.username}</td>
+          <td style={{ padding: 0, verticalAlign: 'middle' }}>
+            {(function (registered) {
+              if (registered) {
+                return (
+                  <Button color='link' disabled>
+                    Registered
+                  </Button>
+                )
+              } else {
+                return (
+                  <Button
+                    color='link'
+                    onClick={() => { self.registerInContest(i._id) }} >
+                    Register
+                  </Button>
+                )
+              }
+            }(self.state.registeredContests.includes(i._id)))}
+          </td>
+        </tr>
+        )
+      })
+    }
 
     const paginator = <Pagination
       onChange={this.pageChange}
@@ -106,7 +109,7 @@ class Contest extends Component {
     />
 
     return (
-      (this.state.contestList.length > 0
+      (this.state.contestList && this.state.contestList.length > 0
         ? <div style={{ textAlign: 'center' }}>
           <h5> List of contests </h5>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
