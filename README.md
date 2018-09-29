@@ -38,7 +38,8 @@ ______
 Is really easy to use/setup and you can always be sure that your services are up.
 
 - **Conclude your learning from the contest.**
-  My teammate and me really enjoy taking part of this marathon (Thanks codechef for making this kind of contests possible!! :P). We learn a lot of topics including:
+  My teammate and me really enjoy taking part of this marathon (Thanks codechef for making this kind of contests possible!! :P).
+  We learned a lot of topics including:
     - How to manage cloud services using Alibaba
     - How to use Codechef API
     - How to interact with OAuth authentication
