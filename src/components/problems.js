@@ -31,7 +31,7 @@ class Problems extends Component {
 
   render () {
     var items = null
-    if (this.state.problems.length > 0) {
+    if (this.state.problems && this.state.problems.length > 0) {
       items = this.state.problems.map(function (i) {
         return (
           <tr key={i.problemCode}>
@@ -50,7 +50,7 @@ class Problems extends Component {
       })
     }
 
-    var problemsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+    var problemsView = <div style={{ justifyContent: 'center', marginTop: 20 }}>
       <div>
         <Table bordered>
           <thead>

@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
-import { Table } from 'reactstrap'
+import {
+  Table,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+  Row,
+  Col
+} from 'reactstrap'
+import classnames from 'classnames'
 import async from 'async'
 
 import Utils from './utils'
 import Countdown from './countdown'
+import Problems from './problems'
 
 class Standings extends Component {
   constructor (props) {
@@ -15,9 +26,11 @@ class Standings extends Component {
       problems: [],
       board: [[]],
       contestCode: props.contestCode,
+      codechefContestCode: '',
       contestDuration: 0,
       startDate: null,
-      endDate: null
+      endDate: null,
+      activeTab: '1'
     }
   }
 
@@ -73,6 +86,14 @@ class Standings extends Component {
     return result
   }
 
+  toggle = (tab) => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      })
+    }
+  }
+
   componentDidMount () {
     Utils.getRequest(`${Utils.config.urlBackend}/contests/${this.state.contestCode}`, (err, contest) => {
       if (err) return window.alert(err)
@@ -80,7 +101,8 @@ class Standings extends Component {
         contestName: contest.name,
         registrants: contest.registrants,
         problems: contest.problemsList,
-        contestDuration: contest.duration
+        contestDuration: contest.duration,
+        codechefContestCode: contest.code
       })
       const token = window.localStorage.getItem('access_token')
       let usersSub = []
@@ -120,14 +142,18 @@ class Standings extends Component {
       ))
     }
 
-    const problemHeader = this.state.problems.map((p, idx) => {
-      return (<th key={idx}> <a href={`${Utils.config.urlMain}/submit/${p}`} target='_bank'>{p}</a> </th>)
-    })
+    var problemHeader = null
+    if (this.state.problems && this.state.problems.length > 0) {
+      problemHeader = this.state.problems.map((p, idx) => {
+        return (<th key={idx}> <a href={`${Utils.config.urlMain}/submit/${p}`} target='_bank'>{p}</a> </th>)
+      })
+    }
 
     var countdownStyle = {
       textAlign: 'center',
       justifyContent: 'center',
       fontSize: 20,
+      marginTop: 20,
       marginLeft: 20
     }
 
@@ -140,29 +166,67 @@ class Standings extends Component {
       />
       : null
 
+    var problemsView = this.state.codechefContestCode
+      ? <Problems contestCode={this.state.codechefContestCode} />
+      : null
+
+    var standingsView = <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+      <Table striped style={{ }}>
+        <thead style={{ textAlign: 'center' }}>
+          <tr>
+            <th> # Rank </th>
+            <th> User Name </th>
+            <th> Solved </th>
+            <th> Penalty </th>
+            {problemHeader}
+          </tr>
+        </thead>
+        <tbody style={{ textAlign: 'center' }}>
+          {board}
+        </tbody>
+      </Table>
+    </div>
+
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-        <div>
-          <Table striped>
-            <thead style={{ textAlign: 'center' }}>
-              <tr>
-                <th> # Rank </th>
-                <th> User Name </th>
-                <th> Solved </th>
-                <th> Penalty </th>
-                {problemHeader}
-              </tr>
-            </thead>
-            <tbody style={{ textAlign: 'center' }}>
-              {board}
-            </tbody>
-          </Table>
+      <div style={{ display: 'flex', textAlign: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '70%' }}>
+          <Nav tabs fill>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '1' })}
+                onClick={() => { this.toggle('1') }}
+              >
+                Standings
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '2' })}
+                onClick={() => { this.toggle('2') }}
+              >
+                Problems
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId='1'>
+              <Row>
+                <Col>
+                  {standingsView}
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tabId='2'>
+              <Row>
+                <Col>
+                  {problemsView}
+                </Col>
+              </Row>
+            </TabPane>
+          </TabContent>
         </div>
-        <div>
-          {countdownView}
-        </div>
-        <br />
-      </div >
+        {countdownView}
+      </div>
     )
   }
 }
