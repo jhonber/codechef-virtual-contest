@@ -47,7 +47,7 @@ Is really easy to use/setup and you can always be sure that your services are up
     
 - **What difficulties did you face while making the app?**
   - (@pin3da feel free to write about OAuth authentications problems xD)
-- **Public URL of application (hosted on alibaba cloud)**: Expire soon [http://149.129.136.228/](http://149.129.136.228/)
+- **Public URL of application (hosted on alibaba cloud)**: Expires soon [http://149.129.136.228/](http://149.129.136.228/)
 - **Code Repository link**
 
   - [backend](https://github.com/pin3da/virtual-chef/)
