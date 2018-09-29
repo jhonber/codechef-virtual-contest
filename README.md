@@ -13,7 +13,7 @@ ______
 ## Form to submission
 - **Application name**: *Codechef virtual contest creator*
 - **Application description**: *This app allow to take part of past contests in virtual mode*
-- **Tag line**: *(What is this?)*
+- **Tag line**: Don't miss up any Codechef contest, take part of past contests in virtual mode and improve your programming skills.
 #### Presentation about your application which should include
   - **Introduction of your app**
   
