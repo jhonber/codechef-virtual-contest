@@ -28,7 +28,7 @@ ______
   - Show standings: *Once contest is running you can show the standings with people registered in that contest*
  
 - **App architecture (images showing the architecture would be preferred)**
-- **Screenshots of the app**
+- **Screenshots of the app** (@jhonber)
 - **What Alibaba Cloud services have you used to develop and host the app? What are these services used for?**
 
 *Elastic Compute Service ECS*
@@ -47,7 +47,7 @@ Is really easy to use/setup and you can always be sure that your services are up
     
 - **What difficulties did you face while making the app?**
   - (@pin3da feel free to write about OAuth authentications problems xD)
-- **Public URL of application (hosted on alibaba cloud)**: [http://149.129.136.228/](http://149.129.136.228/)
+- **Public URL of application (hosted on alibaba cloud)**: Expire soon [http://149.129.136.228/](http://149.129.136.228/)
 - **Code Repository link**
 
   - [backend](https://github.com/pin3da/virtual-chef/)
