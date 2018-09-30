@@ -38,7 +38,17 @@ This application uses 4 components:
 ![Architecture](./arch.png)
 
 
-- **Screenshots of the app** (@jhonber)
+- **Screenshots of the app** 
+
+Home             | 
+:-------------------------:|
+![left](./img/home.png) | 
+
+
+problem statistics         |   Scoreboard
+:-------------------------:|:-------------------------:
+![left](./img/problem-stats.png) | ![right](./img/board.png)
+
 - **What Alibaba Cloud services have you used to develop and host the app? What are these services used for?**
 
 *Elastic Compute Service ECS*
