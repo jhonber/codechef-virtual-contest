@@ -2,11 +2,15 @@ import React, { Component } from 'react'
 import Utils from './utils'
 import {
   Table,
-  Button
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter
 } from 'reactstrap'
 
 import Pagination from 'rc-pagination'
 import 'rc-pagination/assets/index.css'
+import RegisterForm from './registerForm'
 
 class Contest extends Component {
   constructor (props) {
@@ -16,7 +20,10 @@ class Contest extends Component {
       numContest: 0,
       currentPage: 1,
       pageSize: 10,
-      registeredContests: []
+      registeredContests: [],
+      toRegisterContestID: null,
+      toRegisterContestName: null,
+      modalVisible: false
     }
   }
 
@@ -45,21 +52,34 @@ class Contest extends Component {
     this.getUserContests(page)
   }
 
-  registerInContest = (contestID) => {
+  handleSubmitRegisterForm = (contestID, minutesBeforeStart) => {
     const registerURL = `${Utils.config.urlBackend}/contests/${contestID}/register`
     const self = this
     Utils.postRequest(
       registerURL,
-      { contestID: contestID, minutesBeforeStart: 5 },
+      { contestID: contestID, minutesBeforeStart: minutesBeforeStart },
       function (err, res) {
-        // TODO: show this results on the UI and the Register button
         if (err) return console.log('can not register in contest', err)
         if (res.error) return console.log('can not register in contest:', res.error)
         console.log('successfully registered on contest', res)
+        self.setState({ modalVisible: false })
         self.state.registeredContests.push(contestID)
         self.getUserContests()
+        window.alert('successfully registered on contest', res)
       }
     )
+  }
+
+  registerInContest = (contestID, contestName) => {
+    this.setState({
+      modalVisible: true,
+      toRegisterContestID: contestID,
+      toRegisterContestName: contestName
+    })
+  }
+
+  toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible })
   }
 
   render () {
@@ -89,7 +109,7 @@ class Contest extends Component {
                 return (
                   <Button
                     color='link'
-                    onClick={() => { self.registerInContest(i._id) }} >
+                    onClick={() => { self.registerInContest(i._id, i.name) }} >
                     Register
                   </Button>
                 )
@@ -107,6 +127,24 @@ class Contest extends Component {
       total={this.state.numContests}
       pageSize={this.state.pageSize}
     />
+
+    var modalRegister = this.state.toRegisterContestName && this.state.toRegisterContestID
+      ? <Modal
+        size={'sm'}
+        isOpen={this.state.modalVisible}
+        toggle={this.toggleModal}>
+        <ModalBody style={{ textAlign: 'center' }}>
+          <RegisterForm
+            handleSubmitRegisterForm={this.handleSubmitRegisterForm}
+            contestName={this.state.toRegisterContestName}
+            contestID={this.state.toRegisterContestID}
+          />
+        </ModalBody>
+        <ModalFooter style={{ justifyContent: 'center' }}>
+          <Button color='warning' onClick={this.toggleModal}>Cancelar</Button>{' '}
+        </ModalFooter>
+      </Modal>
+      : null
 
     return (
       (this.state.contestList && this.state.contestList.length > 0
@@ -130,6 +168,7 @@ class Contest extends Component {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {paginator}
           </div>
+          {modalRegister}
         </div>
         : null)
     )
