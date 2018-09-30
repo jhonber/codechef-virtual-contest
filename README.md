@@ -12,9 +12,9 @@ Frontend for the Codechef Virtual Contest creator.
 #### Presentation about your application which should include
   - **Introduction of your app**
   
-  *This app is designed to simulate Codechef contests in virtual mode, is an hybrid between a2oj where you can create virtual contests and codeforces Gym when you can start the contest at any time, but specially for Codechef. Here the basic usage:*
-  
-  *You can log in using your account of Codechef (OAuth2), once logged, you can show virtual contests created by any user, also you are available to create your own contests. You can register in any contest. In registration process you can setup the time in minutes before contest starts. After registration, you can go to the contest page and wait until contest start, after contest starts you are avaible to submit your solutions (only submissions made in time of contest are shown in standings).*
+This app is designed to simulate Codechef contests in virtual mode, is a hybrid between a2oj where you can create virtual contests and codeforces Gym when you can start the contest at any time, but especially for Codechef. Here the basic usage:
+
+You can log in using your account of Codechef (OAuth2), once logged, you can show virtual contests created by any user, also you are available to create your own contests. You can register in any contest. In the registration process, you can set up the time in minutes before the contest starts. After registration, you can go to the contest page and wait until contest start, after the contest starts you are available to submit your solutions (only submissions made in the time of contest are shown in standings).
   
 - **Instructions on how to run the app**
 
