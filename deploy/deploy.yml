@@ -37,4 +37,4 @@
       ignore_errors: yes
 
     - name: Start frontend using pm2
-      command: pm2 start /usr/local/bin/serve --name frontend -- -s /root/frontend/build -l 80
+      command: pm2 start /root/n/bin/serve --name frontend -- -s /root/frontend/build -l 80
