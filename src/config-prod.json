@@ -2,10 +2,10 @@
   "urlBase": "https://api.codechef.com",
   "urlAuthorize": "/oauth/authorize",
   "urlToken": "/oauth/token",
-  "urlRedirect": "http://149.129.136.228/auth/codechef/callback",
+  "urlRedirect": "http://149.129.139.145/auth/codechef/callback",
   "clientID": "76ffa84f57f0276abcbc5d8ecc246691",
   "clientSecret": "ed3f09a2110901436e901b998494341f",
   "urlUser": "/users/me",
   "urlMain": "https://www.codechef.com",
-  "urlBackend": "http://149.129.136.228:3333"
+  "urlBackend": "http://149.129.139.145:3333"
 }
