@@ -20,6 +20,15 @@ Frontend for the Codechef Virtual Contest creator.
 
 This is a web application, so the only thing you need to do is go to [http://149.129.139.145/](http://149.129.139.145/) and enjoy. 
 
+If you want to test it locally you must to perform the following steps in both backend and frontend:
+
+- Update config files
+- run `npm install`
+- run `npm start`
+
+This will start the app in *developer* mode. Additional instructions to run in *production* were added in the deploy section.
+
+
 - **Function descriptions**
   - Login with Codechef: *Using your codechef account you can authorize this app to use the API (with PUBLIC permission is enough)*
   - Create virtual contest: *You can search a past contest and select it to create a new virtual contest*
