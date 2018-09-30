@@ -35,6 +35,9 @@ This application uses 4 components:
 - Codechef API
 - MongoDB instance
 
+![Architecture](./arch.png)
+
+
 - **Screenshots of the app** (@jhonber)
 - **What Alibaba Cloud services have you used to develop and host the app? What are these services used for?**
 
