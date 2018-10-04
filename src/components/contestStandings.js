@@ -59,10 +59,13 @@ class Standings extends Component {
         this.setState({ startDate: start, endDate: end })
       }
 
+      // Offset in milliseconds from codechef and local time
+      const offsetIST = -(5 * 60 * 60 * 1000 + 30 * 60 * 1000)
+      const offsetLocal = (new Date().getTimezoneOffset()) * 60 * 1000
+
       for (let j = submissions[i].length - 1; j >= 0; j--) {
         const s = submissions[i][j]
-        // TODO: this is hack to solve a bug from codechef, they return the date without TZ (-10h 3min).
-        const sDate = new Date(s.date).getTime() - 11 * 60 * 60 * 1000 + 30 * 60 * 1000
+        const sDate = new Date(s.date).getTime() - offsetLocal + offsetIST
         if (start <= sDate && sDate <= end && this.state.problems.includes(s.problemCode)) {
           const ID = codeToID[s.problemCode]
           if (result[i].problems[ID][0]) continue // already solved
