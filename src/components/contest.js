@@ -8,8 +8,12 @@ import {
   ModalFooter
 } from 'reactstrap'
 
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import Pagination from 'rc-pagination'
 import 'rc-pagination/assets/index.css'
+
 import RegisterForm from './registerForm'
 
 class Contest extends Component {
@@ -31,6 +35,11 @@ class Contest extends Component {
     this.getUserContests()
   }
 
+  notify = (msg, isError) => {
+    if (isError) toast.error(msg)
+    else toast.success(msg)
+  }
+
   getUserContests = (page) => {
     page = page || this.state.currentPage
     const self = this
@@ -38,7 +47,7 @@ class Contest extends Component {
     Utils.getRequest(
       `${Utils.config.urlBackend}/contests/?offset=${offset}&limit=${this.state.pageSize}`,
       function (err, data) {
-        if (err) return console.log('can not get the users\'s contest', err)
+        if (err) return self.notify(`can not get the users contest ${err}`, true)
         self.setState({
           contestList: data.contests,
           numContests: data.numContests,
@@ -59,13 +68,12 @@ class Contest extends Component {
       registerURL,
       { contestID: contestID, minutesBeforeStart: minutesBeforeStart },
       function (err, res) {
-        if (err) return console.log('can not register in contest', err)
-        if (res.error) return console.log('can not register in contest:', res.error)
-        console.log('successfully registered on contest', res)
+        if (err) return self.notify(`can not register in contest ${err}`, true)
+        if (res.error) self.notify(`can not register in contest ${err}`, true)
         self.setState({ modalVisible: false })
         self.state.registeredContests.push(contestID)
         self.getUserContests()
-        window.alert('successfully registered on contest', res)
+        self.notify('successfully registered on contest')
       }
     )
   }
@@ -141,7 +149,7 @@ class Contest extends Component {
           />
         </ModalBody>
         <ModalFooter style={{ justifyContent: 'center' }}>
-          <Button color='warning' onClick={this.toggleModal}>Cancelar</Button>{' '}
+          <Button color='warning' onClick={this.toggleModal}>Cancel</Button>{' '}
         </ModalFooter>
       </Modal>
       : null
@@ -169,6 +177,7 @@ class Contest extends Component {
             {paginator}
           </div>
           {modalRegister}
+          <ToastContainer />
         </div>
         : null)
     )
