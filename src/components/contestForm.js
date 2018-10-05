@@ -4,25 +4,28 @@ import {
   Form,
   FormGroup,
   Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalFooter
+  Input
 } from 'reactstrap'
+
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 class ContestForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
       contestCode: '',
-      contestsList: [],
-      modalContent: '',
-      modalVisible: false
+      contestsList: []
     }
   }
 
   componentDidMount () {
     this.getPastContests()
+  }
+
+  notify = (msg, isError) => {
+    if (isError) toast.error(msg)
+    else toast.success(msg)
   }
 
   getPastContests = () => {
@@ -51,7 +54,7 @@ class ContestForm extends Component {
           contestsList: filtered
         })
       } else {
-        console.log('Error retrieving data: ', err)
+        self.notify(`Error retrieving data: ${err}`, true)
       }
     })
   }
@@ -62,27 +65,19 @@ class ContestForm extends Component {
     }
     const self = this
     Utils.postRequest(`${Utils.config.urlBackend}/contests`, data, function (err, res) {
-      var msj = 'The contest was successfully created.'
+      var msg = 'The contest was successfully created.'
       if (err) {
-        msj = 'Problem creating new contest: ' + err
-        console.log(msj)
-      } else {
-        if (self.props.handleUpdateContestList) {
-          self.props.handleUpdateContestList()
-        }
+        msg = 'Problem creating new contest: ' + err
+        self.notify(msg, true)
+      } else if (self.props.handleUpdateContestList) {
+        self.props.handleUpdateContestList()
       }
-      self.setState({ modalContent: msj })
-      self.toggleModal()
+      self.notify(msg)
     })
   }
 
   handleChange = (event) => {
-    console.log('value: ', event.target.value)
     this.setState({ contestCode: event.target.value })
-  }
-
-  toggleModal = () => {
-    this.setState({ modalVisible: !this.state.modalVisible })
   }
 
   render () {
@@ -113,22 +108,10 @@ class ContestForm extends Component {
       </Form>
     </div>
 
-    var modal = <Modal
-      size={'sm'}
-      isOpen={this.state.modalVisible}
-      toggle={this.toggleModal}>
-      <ModalBody style={{ textAlign: 'center' }}>
-        {this.state.modalContent}
-      </ModalBody>
-      <ModalFooter>
-        <Button color='primary' onClick={this.toggleModal}>Ok</Button>{' '}
-      </ModalFooter>
-    </Modal>
-
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {this.state.contestsList.length > 0 && form}
-        {modal}
+        <ToastContainer />
       </div>
     )
   }
