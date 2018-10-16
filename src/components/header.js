@@ -57,7 +57,7 @@ class Header extends Component {
 
     var header = <Nav>
       <NavLink href='/'><u>Home</u></NavLink>
-      <NavLink href='#'><u>About</u></NavLink>
+      <NavLink href='/about'><u>About</u></NavLink>
       <NavLink href='#'>{user}</NavLink>
       {loginView}
     </Nav>

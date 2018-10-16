@@ -31,10 +31,16 @@ class App extends Component {
     let contestSection = <Contest ref={this.contestRef} />
     let createContest = <ContestForm handleUpdateContestList={this.handleUpdateContestList} />
 
-    let home = <div>
-      {createContest}
-      {contestSection}
-    </div >
+    let home = <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <p>Please log in :P</p>
+    </div>
+
+    if (Utils.isLogged()) {
+      home = <div>
+        {createContest}
+        {contestSection}
+      </div >
+    }
 
     var errorPage = <div> <h2> LocalStorage not supported! </h2> </div>
 

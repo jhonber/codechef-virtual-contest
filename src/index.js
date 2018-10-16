@@ -8,14 +8,13 @@ import ContestStandings from './components/contestStandings'
 import Utils from './components/utils'
 import Problems from './components/problems'
 import Header from './components/header'
+import About from './components/about'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
 function startHomeView () {
   ReactDOM.render(<Header />, document.getElementById('header'))
-  if (Utils.isLogged()) {
-    ReactDOM.render(<App />, document.getElementById('root'))
-  }
+  ReactDOM.render(<App />, document.getElementById('root'))
 }
 
 function startContestStandings (context) {
@@ -31,6 +30,14 @@ function startProblemsView (context) {
   var code = context.params.code
   ReactDOM.render(
     <Problems contestCode={code} />,
+    document.getElementById('root')
+  )
+}
+
+function startAbout (context) {
+  ReactDOM.render(<Header />, document.getElementById('header'))
+  ReactDOM.render(
+    <About />,
     document.getElementById('root')
   )
 }
@@ -58,6 +65,7 @@ Page('/', startHomeView)
 Page('/auth/codechef/callback', startOAuth2)
 Page('/contests/:code', checkLogin, startContestStandings)
 Page('/problems/:code', startProblemsView)
+Page('/about', startAbout)
 Page.start()
 
 registerServiceWorker()
