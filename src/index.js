@@ -8,6 +8,7 @@ import ContestStandings from './components/contestStandings'
 import Utils from './components/utils'
 import Problems from './components/problems'
 import Header from './components/header'
+import About from './components/about'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
@@ -35,6 +36,14 @@ function startProblemsView (context) {
   )
 }
 
+function startAbout (context) {
+  ReactDOM.render(<Header />, document.getElementById('header'))
+  ReactDOM.render(
+    <About />,
+    document.getElementById('root')
+  )
+}
+
 function startOAuth2 (context) {
   var code = context.querystring.split('&')[0].split('=')[1]
 
@@ -58,6 +67,7 @@ Page('/', startHomeView)
 Page('/auth/codechef/callback', startOAuth2)
 Page('/contests/:code', checkLogin, startContestStandings)
 Page('/problems/:code', startProblemsView)
+Page('/about', startAbout)
 Page.start()
 
 registerServiceWorker()
