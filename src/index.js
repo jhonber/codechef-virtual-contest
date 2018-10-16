@@ -14,9 +14,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 function startHomeView () {
   ReactDOM.render(<Header />, document.getElementById('header'))
-  if (Utils.isLogged()) {
-    ReactDOM.render(<App />, document.getElementById('root'))
-  }
+  ReactDOM.render(<App />, document.getElementById('root'))
 }
 
 function startContestStandings (context) {
